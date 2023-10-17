@@ -7,7 +7,9 @@
 using namespace std;
 
 class Date {
+
 public:
+    friend ostream& operator<<(ostream& out, const Date& d);
     Date(int year = 1970, int month = 1, int day = 1);
     bool IsLeapYear(int year);
     int GetDay(int year, int month);
@@ -27,6 +29,13 @@ public:
 
     Date& operator-=(int day);
     Date operator-(int day);
+    int operator-(const Date& d);
+
+    Date& operator++();
+    Date operator++(int);
+
+    Date& operator--();
+    Date operator--(int);
 
     // 赋值重载
     Date& operator=(const Date& d);
@@ -35,6 +44,8 @@ private:
     int _month;
     int _day;
 };
+
+ostream& operator<<(ostream& out, const Date& d);
 
 
 #endif //CLASS_DATE_H

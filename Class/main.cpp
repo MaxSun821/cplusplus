@@ -3,13 +3,12 @@
 
 void TestDate() {
     Date d1(2023, 10, 17);
-    d1.Print();
+    cout << d1 << endl;
 
     Date d2(2024, 7, 21);
-    d2.Print();
+    cout << d2 << endl;
 
-    Date d3 = d1 - 100;
-    d3.Print();
+
 
 }
 

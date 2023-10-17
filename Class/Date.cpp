@@ -93,15 +93,20 @@ Date& Date::operator=(const Date &d) {
 
 // d += 天数
 Date& Date::operator+=(int day) {
-    _day += day;
-    while(_day > GetDay(_year, _month)) {
-        _day -= GetDay(_year, _month);
-        _month++;
-        if(_month == 13) {
-            _year++;
-            _month = 1;
+    if(day < 0) {
+        *this -= -day;
+    }else {
+        _day += day;
+        while(_day > GetDay(_year, _month)) {
+            _day -= GetDay(_year, _month);
+            _month++;
+            if(_month == 13) {
+                _year++;
+                _month = 1;
+            }
         }
     }
+
     return *this;
 }
 
@@ -112,15 +117,20 @@ Date Date::operator+(int day) {
 }
 
 Date& Date::operator-=(int day) {
-    _day -= day;
-    while(_day < 1) {
-        _month--;
-        if(_month == 0) {
-            _year--;
-            _month = 12;
+    if(day < 0) {
+        *this += -day;
+    }else {
+        _day -= day;
+        while(_day < 1) {
+            _month--;
+            if(_month == 0) {
+                _year--;
+                _month = 12;
+            }
+            _day += GetDay(_year, _month);
         }
-        _day += GetDay(_year, _month);
     }
+
     return *this;
 }
 
@@ -128,4 +138,48 @@ Date Date::operator-(int day) {
     Date tmp(*this);
     tmp -= day;
     return tmp;
+}
+
+int Date::operator-(const Date &d) {
+    Date max = *this;
+    Date min = d;
+    int flag = 1;
+    if(*this < d) {
+        min = *this;
+        max = d;
+        flag = -1;
+    }
+    int n = 0;
+    while(min != max) {
+        ++min;
+        ++n;
+    }
+    return n * flag;
+}
+
+Date& Date::operator++() {
+    *this += 1;
+    return *this;
+}
+
+Date Date::operator++(int) {
+    Date tmp(*this);
+    *this += 1;
+    return tmp;
+}
+
+Date& Date::operator--() {
+    *this -= 1;
+    return *this;
+}
+
+Date Date::operator--(int) {
+    Date tmp(*this);
+    *this -= 1;
+    return tmp;
+}
+
+ostream& operator<<(ostream& out, const Date& d) {
+    out << d._year << "/" << d._month << "/" << d._day;
+    return out;
 }
