@@ -1,30 +1,19 @@
 #include "Date.h"
 
 
+void TestDate() {
+    Date d1(2023, 10, 17);
+    d1.Print();
 
+    Date d2(2024, 7, 21);
+    d2.Print();
 
-
-int main() {
-
-    Date d1(2022, 7, 18);
-
-    Date d2(2025, 2, 28);
-
-    Date d3;
-
-    cin >> d3;
+    Date d3 = d1 - 100;
     d3.Print();
 
+}
 
-//    long day = d1 - d2;
-//
-//    cout << "相差" << day << endl;
-//
-//    d2++;
-//
-//    d2.Print();
-
-
-
+int main() {
+    TestDate();
     return 0;
 }
