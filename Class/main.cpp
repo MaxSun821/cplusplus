@@ -8,6 +8,8 @@ void TestDate() {
     Date d2(2024, 7, 21);
     cout << d2 << endl;
 
+    cout << (d2 - d1) << endl;
+
 
 
 }
