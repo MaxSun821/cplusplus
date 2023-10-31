@@ -1,8 +1,4 @@
-#include <iostream>
-#include <string>
-#include <algorithm>
 
-using namespace std;
 
 //class Solution {
 //public:
@@ -302,9 +298,10 @@ using namespace std;
 //	return 0;
 //}
 
-
+#include "string.h"
 int main() {
-
+    mystl::string s;
+    s.stringTest();
     return 0;
 }
 
