@@ -241,65 +241,70 @@ using namespace std;
 //
 //}
 
-int main()
-{
-	//string strText = "How are you?";
+//int main()
+//{
+//	//string strText = "How are you?";
+//
+//	//string strSeparator = " ";
+//
+//	//string strResult;
+//
+//	//int size_pos = 0;
+//
+//	//int size_prev_pos = 0;
+//
+//	//while ((size_pos = strText.find_first_of(strSeparator, size_pos)) != string::npos)
+//
+//	//{
+//
+//	//	strResult = strText.substr(size_prev_pos, size_pos - size_prev_pos);
+//
+//	//	cout << strResult << " ";
+//
+//	//	size_prev_pos = ++size_pos;
+//
+//	//}
+//
+//	//if (size_prev_pos != strText.size())
+//
+//	//{
+//
+//	//	strResult = strText.substr(size_prev_pos, size_pos - size_prev_pos);
+//
+//	//	cout << strResult << " ";
+//
+//	//}
+//
+//	//cout << endl;
+//
+//	//return 0;
+//
+//	string str = "Hello Bit.";
+//
+//	string::iterator it = str.begin();
+//
+//	while (it != str.end())
+//
+//	{
+//
+//		if (*it != ' ')
+//
+//			cout << *it;
+//
+//		else
+//
+//			str.erase(it);
+//
+//		it++;
+//
+//	}
+//
+//	return 0;
+//}
 
-	//string strSeparator = " ";
 
-	//string strResult;
+int main() {
 
-	//int size_pos = 0;
-
-	//int size_prev_pos = 0;
-
-	//while ((size_pos = strText.find_first_of(strSeparator, size_pos)) != string::npos)
-
-	//{
-
-	//	strResult = strText.substr(size_prev_pos, size_pos - size_prev_pos);
-
-	//	cout << strResult << " ";
-
-	//	size_prev_pos = ++size_pos;
-
-	//}
-
-	//if (size_prev_pos != strText.size())
-
-	//{
-
-	//	strResult = strText.substr(size_prev_pos, size_pos - size_prev_pos);
-
-	//	cout << strResult << " ";
-
-	//}
-
-	//cout << endl;
-
-	//return 0;
-
-	string str = "Hello Bit.";
-
-	string::iterator it = str.begin();
-
-	while (it != str.end())
-
-	{
-
-		if (*it != ' ')
-
-			cout << *it;
-
-		else
-
-			str.erase(it);
-
-		it++;
-
-	}
-
-	return 0;
+    return 0;
 }
-
 
