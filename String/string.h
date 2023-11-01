@@ -1,8 +1,9 @@
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS 1
+// #define _CRT_SECURE_NO_WARNINGS 1
 
 #include <iostream>
 #include <assert.h>
+#include <cstring>
 
 using namespace std;
 
@@ -75,6 +76,15 @@ namespace mystl {
 			return !(*this == str);
 		}
 
+        string& operator+=(const char ch) {
+            push_back(ch);
+            return *this;
+        }
+        string& operator+=(const char* str) {
+            append(str);
+            return *this;
+        }
+        // 扩容
 		void reserve(size_t n) {
 			char* tmp = new char[n + 1];
 			strcpy(tmp, _str);
@@ -84,6 +94,39 @@ namespace mystl {
 
 			_capacity = n;
 		}
+
+        //resize
+        void resize(size_t n) {
+            if(n < _size) {
+                char* tmp = new char[n + 1];
+                strncpy(tmp, _str, n);
+
+                _size = n;
+                _str = tmp;
+            } else {
+                _size = n;
+                _capacity = n;
+            }
+        }
+        void resize(size_t n, const char ch) {
+            if(n < _size) {
+                char* tmp = new char[n + 1];
+                strncpy(tmp, _str, n);
+
+                _size = n;
+                _str = tmp;
+            } else if(n > _size) {
+                char* tmp = new char[n + 1];
+                strcpy(tmp, _str);
+
+                while(_size != n) {
+                    tmp[_size++] = ch;
+                }
+                tmp[_size] = '\0';
+                _str = tmp;
+                _capacity = n;
+            }
+        }
 
 		void push_back(char ch) {
 			if (_size + 1 > _capacity) {
@@ -121,6 +164,40 @@ namespace mystl {
 			return _size;
 		}
 
+        // 任意位置插入
+        string& insert(size_t pos, const char ch) {
+            assert(pos <= _size);
+            reserve( 2 * _capacity);
+            size_t end = _size;
+            while(end != pos) {
+                _str[end] = _str[end - 1];
+                --end;
+            }
+            _str[pos] = ch;
+            ++_size;
+            return *this;
+        }
+        string& insert(size_t pos, const char* str) {
+            assert(pos <= _size);
+            size_t len = strlen(str);
+
+            reserve(_size + len);
+
+            char* tmp = new char[_capacity + 1];
+            strncpy(tmp, _str, pos);
+            strcpy(tmp + pos, str);
+            strcpy(tmp + pos + len, _str + pos);
+            _size += len;
+
+            _str = tmp;
+
+            return *this;
+        }
+        string& erase(size_t pos = 0, size_t len = npos) {
+
+        }
+
+
 		// 析构函数
 		~string() {
 			delete[] _str;
@@ -132,7 +209,11 @@ namespace mystl {
 		char* _str;
 		size_t _size;
 		size_t _capacity;
+
+        static const size_t npos;
 	};
+
+    const size_t string::npos = -1;
 
 	void testString() {
 		string s1;
@@ -190,4 +271,37 @@ namespace mystl {
 		s2.push_back('o');
 		cout << s2.c_str() << endl;
 	}
+    void testString5() {
+        string s1 = "hello";
+
+        s1 += " world";
+
+        cout << s1.c_str() << endl;
+
+        string s2;
+
+        s2 += 'n';
+        s2 += 'o';
+        cout << s2.c_str() << endl;
+    }
+    void testString6() {
+        string s("I like to code in C");
+        cout << s.c_str() << endl;
+
+        size_t sz = s.size();
+
+        s.resize(sz + 2, '+');
+        cout << s.c_str() << endl;
+
+        s.resize(14);
+        cout << s.c_str() << endl;
+    }
+    void testString7() {
+        string s1 = "hello";
+
+        s1.insert(0, " world");
+        //s1.insert(6, 'w');
+        cout << s1.c_str() << endl;
+    }
+
 }

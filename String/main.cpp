@@ -303,7 +303,16 @@ int main() {
     
     // mystl::testString2();
 
-    mystl::testString4();
+    mystl::testString7();
+//    string s1 = "hello world";
+//    cout << s1 << endl;
+//    cout << s1.size() << endl;
+//    cout << s1.capacity() << endl;
+//
+//    s1.resize(5);
+//    cout << s1 << endl;
+//    cout << s1.size() << endl;
+//    cout << s1.capacity() << endl;
 
     return 0;
 }
