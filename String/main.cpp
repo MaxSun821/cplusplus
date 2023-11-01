@@ -300,14 +300,11 @@
 
 #include "string.h"
 int main() {
-    /*mystl::string s;
-    s.stringTest();*/
+    
+    // mystl::testString2();
 
-    string s = "hello world";
-    s.reserve(18);
-    cout << s << endl;
-    cout << s.size() << endl;
-    cout << s.capacity() << endl;
+    mystl::testString4();
+
     return 0;
 }
 

@@ -1,103 +1,193 @@
-
-
-#ifndef STRING_STRING_H
-#define STRING_STRING_H
-
+#pragma once
 #define _CRT_SECURE_NO_WARNINGS 1
 
 #include <iostream>
-#include <string.h>
 #include <assert.h>
+
 using namespace std;
 
 namespace mystl {
-    class string {
-    public:
-        // 构造函数
-        string(const char* s = "")
-            :_size(strlen(s))
-        {
-            
-            _capacity = _size == 0 ? 4 : _size;
-            _str = new char[_capacity + 1];
-            strcpy(_str, s);
-        }
+	class string {
+	public:
+		typedef char* iterator;
+		typedef const char* const_iterator;
 
-        // 拷贝构造函数
-        string(const string& s)
-            : _size(s._size)
-            , _capacity(s._capacity)
-        {
-            _str = new char[s._capacity + 1];
-            strcpy(_str, s._str);
-        }
+		// 构造函数
+		string(const char* str = "")
+			: _size(strlen(str))
+		{
+			_capacity = _size == 0 ? 4 : strlen(str);
+			_str = new char[_capacity + 1];
+			strcpy(_str, str);
+		}
+		// 拷贝构造
+		string(const string& str)
+			: _size(str._size)
+			, _capacity(str._capacity)
+		{
+			_str = new char[str._capacity + 1];
+			strcpy(_str, str._str);
+		}
 
-        const char* c_str() const {
-            return _str;
-        }
+		// 返回字符指针
+		const char* c_str() const{
+			return _str;
+		}
+		//运算符重载
+		char& operator[](size_t pos) {
+			assert(pos < _size);
+			return _str[pos];
+		}
 
-        char& operator[](int pos) {
-            assert(pos < _size);
-            return _str[pos];
-        }
+		const char& operator[](size_t pos) const {
+			assert(pos < _size);
+			return _str[pos];
+		}
 
-        string& operator=(const string& s) {
-            char* tmp = new char[s._capacity + 1];
-            strcpy(tmp, s._str);
+		string& operator=(const string& str) {
+			char* tmp = new char[str._capacity + 1]; // 重新开辟一块空间
+			strcpy(tmp, str._str);
 
-            delete[] _str;
-            _str = tmp;
-            _size = s._size;
-            _capacity = s._capacity;
-        }
+			delete[] _str; // 若new空间失败，也不影响原字符串
+			_str = tmp;
+			_size = str._size;
+			_capacity = str._capacity;
 
-        // 返回字符串长度
-        size_t size() const {
-            return _size;
-        }
+			return *this;
+		}
 
-        // 返回字符串容量
-        size_t capacity() const {
-            return _capacity;
-        }
+		bool operator<(const string& str) const {
+			return strcmp(_str, str._str) < 0;
+		}
+		bool operator==(const string& str) const {
+			return strcmp(_str, str._str) == 0;
+		}
+		bool operator<=(const string& str) const {
+			return *this < str || *this == str;
+		}
+		bool operator>(const string& str) const {
+			return !(*this <= str);
+		}
+		bool operator>=(const string& str) const {
+			return !(*this < str);
+		}
+		bool operator!=(const string& str) const {
+			return !(*this == str);
+		}
 
-        // 扩容
-        void reserve(size_t n = 0) {
-            if (n <= _capacity) {
-                return;
-            }
-            char* tmp = new char[n + 1];
-            strcpy(tmp, _str);
-            delete[] _str;
-            _str = tmp;
-            _capacity = n;
-        }
+		void reserve(size_t n) {
+			char* tmp = new char[n + 1];
+			strcpy(tmp, _str);
 
-        // 析构函数
-        ~string() {
-            delete[] _str;
-            _size = _capacity = 0;
-        }
+			delete[] _str;
+			_str = tmp;
 
-        void stringTest() {
-            string s1 = "hello world";
-            string s2;
-            string s3(s1);
+			_capacity = n;
+		}
 
-            cout << s1.c_str() << endl;
-            // cout << s1[11] << endl;
-            cout << s2.c_str() << endl;
-            cout << s3.c_str() << endl;
+		void push_back(char ch) {
+			if (_size + 1 > _capacity) {
+				reserve(_capacity * 2);
+			}
 
-            cout << s1.size() << endl;
-        }
-    private:
-        char* _str;
-        size_t _size;
-        size_t _capacity;
-    };
+			_str[_size++] = ch;
+			_str[_size] = '\0';
+		}
+		void append(const char* str) {
+			size_t len = strlen(str);
+			if (_size + len > _capacity) {
+				reserve(_size + len);
+			}
+
+			strcpy(_str + _size, str);
+			_size += len;
+		}
+
+		// 迭代器
+		iterator begin() {
+			return _str;
+		}
+		iterator end() {
+			return _str + _size;
+		}
+		const_iterator begin() const {
+			return _str;
+		}
+		const_iterator end() const {
+			return _str + _size;
+		}
+
+		size_t size() const {
+			return _size;
+		}
+
+		// 析构函数
+		~string() {
+			delete[] _str;
+			_size = _capacity = 0;
+		}
+
+
+	private:
+		char* _str;
+		size_t _size;
+		size_t _capacity;
+	};
+
+	void testString() {
+		string s1;
+		string s2("hello world");
+
+		cout << s1.c_str() << endl;
+		cout << s2.c_str() << endl;
+
+		s2[0]++;
+		cout << s2.c_str() << endl;
+	}
+
+	void testString2() {
+		string s1("hello world");
+		string s2(s1);
+
+		cout << s1.c_str() << endl;
+		s2[0]++;
+		cout << s2.c_str() << endl;
+
+		string s3;
+		string s4 = "";
+		s3 = s2;
+		cout << s3.c_str() << endl;
+		s4 = s3;
+		cout << s4.c_str() << endl;
+	}
+
+	void testString3() {
+		string s1("hello world");
+		
+		string::iterator it = s1.begin();
+		while (it != s1.end()) {
+			cout << *it << " ";
+			++it;
+		}
+		cout << endl;
+
+		for (auto ch : s1) {
+			cout << ch << " ";
+		}
+		cout << endl;
+	}
+
+	void testString4() {
+		string s1 = "hello";
+
+		s1.append(" world");
+
+		cout << s1.c_str() << endl;
+
+		string s2;
+
+		s2.push_back('n');
+		s2.push_back('o');
+		cout << s2.c_str() << endl;
+	}
 }
-
-
-
-#endif //STRING_STRING_H
