@@ -303,7 +303,7 @@ int main() {
     
     // mystl::testString2();
 
-    mystl::testString7();
+    mystl::testString10();
 //    string s1 = "hello world";
 //    cout << s1 << endl;
 //    cout << s1.size() << endl;

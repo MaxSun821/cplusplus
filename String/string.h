@@ -5,7 +5,12 @@
 #include <assert.h>
 #include <cstring>
 
-using namespace std;
+using std::cout;
+using std::endl;
+using std::ostream;
+using std::istream;
+using std::cin;
+
 
 namespace mystl {
 	class string {
@@ -86,45 +91,35 @@ namespace mystl {
         }
         // 扩容
 		void reserve(size_t n) {
-			char* tmp = new char[n + 1];
-			strcpy(tmp, _str);
-
-			delete[] _str;
-			_str = tmp;
-
-			_capacity = n;
-		}
-
-        //resize
-        void resize(size_t n) {
-            if(n < _size) {
-                char* tmp = new char[n + 1];
-                strncpy(tmp, _str, n);
-
-                _size = n;
-                _str = tmp;
-            } else {
-                _size = n;
-                _capacity = n;
-            }
-        }
-        void resize(size_t n, const char ch) {
-            if(n < _size) {
-                char* tmp = new char[n + 1];
-                strncpy(tmp, _str, n);
-
-                _size = n;
-                _str = tmp;
-            } else if(n > _size) {
+            if(n > _capacity) {
                 char* tmp = new char[n + 1];
                 strcpy(tmp, _str);
 
-                while(_size != n) {
-                    tmp[_size++] = ch;
-                }
-                tmp[_size] = '\0';
+                delete[] _str;
                 _str = tmp;
+
                 _capacity = n;
+            }
+		}
+
+        //resize
+
+        void resize(size_t n, const char ch = '\0') {
+            if(n <= _size) {
+                _size = n;
+                _str[_size] = '\0';
+            } else {
+                if(n > _capacity) {
+                    reserve(n);
+                }
+
+                size_t i = _size;
+                while(i < n) {
+                    _str[i] = ch;
+                    i++;
+                }
+                _size = n;
+                _str[_size] = '\0';
             }
         }
 
@@ -181,12 +176,17 @@ namespace mystl {
             assert(pos <= _size);
             size_t len = strlen(str);
 
-            reserve(_size + len);
+            if(_size + len > _capacity) {
+                reserve(_size + len);
+            }
+
 
             char* tmp = new char[_capacity + 1];
             strncpy(tmp, _str, pos);
             strcpy(tmp + pos, str);
             strcpy(tmp + pos + len, _str + pos);
+            delete[] _str;
+
             _size += len;
 
             _str = tmp;
@@ -194,7 +194,21 @@ namespace mystl {
             return *this;
         }
         string& erase(size_t pos = 0, size_t len = npos) {
+            assert(pos < _size);
+            if(len == npos || len >= _size) {
+                _str[pos] = '\0';
+                _size = pos;
+            } else {
+                strcpy(_str + pos, _str + pos + len);
+                _size -= len;
+            }
+            return *this;
+        }
 
+        void swap(string& s) {
+            std::swap(_str, s._str);
+            std::swap(_size, s._size);
+            std::swap(_capacity, s._capacity);
         }
 
 
@@ -214,6 +228,22 @@ namespace mystl {
 	};
 
     const size_t string::npos = -1;
+
+    ostream& operator<<(ostream& out, string& s) {
+        for(int i = 0; i < s.size(); i++) {
+            out << s[i];
+        }
+        return out;
+    }
+
+    istream& operator>>(istream& in, string& s) {
+        char ch = in.get();
+        while(ch != ' ' && ch != '\n') {
+            s += ch;
+            ch = in.get();
+        }
+        return in;
+    }
 
 	void testString() {
 		string s1;
@@ -299,9 +329,31 @@ namespace mystl {
     void testString7() {
         string s1 = "hello";
 
-        s1.insert(0, " world");
+        //s1.insert(0, 'x');
+        s1.insert(4, " world");
         //s1.insert(6, 'w');
         cout << s1.c_str() << endl;
+    }
+    void testString8() {
+        string s1 = "123456789";
+
+        s1.erase(4, 2);
+        cout << s1.c_str() << endl;
+        s1.erase(3, 30);
+
+        cout << s1.c_str() << endl;
+    }
+
+    void testString9() {
+        string s1 = "hello world";
+
+        cout << s1 << endl;
+    }
+
+    void testString10() {
+        string s1;
+        cin >> s1;
+        cout << s1 << endl;
     }
 
 }
