@@ -23,6 +23,11 @@ namespace mystl {
             ,_end_of_storage(nullptr)
         {}
 
+        ~vector() {
+            delete[] _start;
+            _start = _finish = _end_of_storage = nullptr;
+        }
+
         void resize(size_t n, T data = T()) {
             if(n < size()) {
                 _finish = _start + n;
@@ -90,7 +95,7 @@ namespace mystl {
             ++_finish;
         }
 
-        void erase(iterator pos) {
+        iterator erase(iterator pos) {
             assert(pos >= _start);
             assert(pos < _finish);
 
@@ -100,6 +105,8 @@ namespace mystl {
                 ++start;
             }
             --_finish;
+
+            return pos;
         }
 
         bool empty() {
