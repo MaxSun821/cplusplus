@@ -64,6 +64,6 @@
 //}
 
 int main() {
-    mystl::testVector4();
+    mystl::testVector5();
     return 0;
 }

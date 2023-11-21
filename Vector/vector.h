@@ -3,9 +3,9 @@
 #define VECTOR_VECTOR_H
 
 #include <iostream>
-#include <cstring>
-#include <assert.h>
 #include <algorithm>
+#include <string>
+#include <cassert>
 
 using std::cout;
 using std::endl;
@@ -22,6 +22,48 @@ namespace mystl {
             ,_finish(nullptr)
             ,_end_of_storage(nullptr)
         {}
+
+        vector(size_t n, const T& data = T())
+            :_start(nullptr)
+            ,_finish(nullptr)
+            ,_end_of_storage(nullptr)
+        {
+            reserve(n);
+            for(size_t i = 0; i < n; ++i) {
+                push_back(data);
+            }
+        }
+        vector(int n, const T& data = T())
+                :_start(nullptr)
+                ,_finish(nullptr)
+                ,_end_of_storage(nullptr)
+        {
+            reserve(n);
+            for(size_t i = 0; i < n; ++i) {
+                push_back(data);
+            }
+        }
+
+        template<class InputIterator>
+        vector(InputIterator _first, InputIterator _last) {
+            while(_first != _last) {
+                push_back(*_first);
+                ++_first;
+            }
+        }
+
+        vector(const vector<T>& v)
+            :_start(nullptr)
+            ,_finish(nullptr)
+            ,_end_of_storage(nullptr)
+        {
+            _start = new T[v.capacity()];
+            for(size_t i = 0; i < v.size(); ++i) {
+                _start[i] = v._start[i];
+            }
+            _finish = _start + v.size();
+            _end_of_storage = _start + v.capacity();
+        }
 
         ~vector() {
             delete[] _start;
@@ -48,7 +90,13 @@ namespace mystl {
             if(n > capacity()) {
                 T* tmp = new T[n];
                 if(_start) {
-                    memcpy(tmp, _start, sizeof(T) * sz);
+                    // 使用memcpy拷贝，会造成浅拷贝程序有问题
+                    // memcpy(tmp, _start, sizeof(T) * sz);
+
+                    // 使用深拷贝
+                    for(size_t i = 0; i < sz; ++i) {
+                        tmp[i] = _start[i];
+                    }
                     delete[] _start;
                 }
 
@@ -116,6 +164,17 @@ namespace mystl {
         T& operator[](size_t pos) {
             assert(pos < size());
             return _start[pos];
+        }
+
+        vector<T>& operator=(vector<T> v) {
+            swap(v);
+            return *this;
+        }
+
+        void swap(vector<T> v) {
+            std::swap(_start, v._start);
+            std::swap(_finish, v._finish);
+            std::swap(_end_of_storage, v._end_of_storage);
         }
 
         iterator begin() {
@@ -236,6 +295,46 @@ namespace mystl {
             cout << n << " ";
         }
         cout << endl;
+    }
+    class Solution {
+    public:
+        vector<vector<int>> generate(int numRows) {
+            vector<vector<int>> vv;
+            vv.resize(numRows, vector<int>());
+            // 初始化
+            for(int i = 0; i < vv.size(); ++i) {
+                vv[i].resize(i + 1, 0);
+                vv[i][0] = 1;
+                vv[i][vv[i].size() - 1] = 1;
+            }
+
+            for(int i = 0; i < vv.size(); ++i) {
+                for(int j = 0; j < vv[i].size(); ++j) {
+                    if(vv[i][j] == 0) {
+                        vv[i][j] = vv[i - 1][j] + vv[i - 1][j - 1];
+                    }
+                }
+            }
+            return vv;
+        }
+    };
+
+    void testVector5() {
+        vector<std::string> v(3, "123456");
+        for(auto e : v) {
+            cout << e << " ";
+        }
+        cout << endl;
+
+        Solution s;
+        vector<vector<int>> vv = s.generate(7);
+
+        for(int i = 0; i < vv.size(); ++i) {
+            for(int j = 0; j < vv[i].size(); ++j) {
+                cout << vv[i][j] << " ";
+            }
+            cout << endl;
+        }
     }
 
 }
