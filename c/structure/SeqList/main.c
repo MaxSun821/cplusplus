@@ -20,7 +20,7 @@ int main(void)
 
 
     SLErase(&s, 0);
-    SLErase(&s, 8);
+    SLErase(&s, 7);
     SLErase(&s, 3);
     SLPrint(&s);
 

@@ -1,3 +1,4 @@
+
 #include "SeqList.h"
 
 
@@ -35,20 +36,14 @@ void SLPushFront(SL* psl, SLDataType x)
 }
 void SLPopBack(SL* psl)
 {
-    if(SLCheckSize(psl) == 1)
-    {
-        printf("顺序表已空\n");
-        return;
-    }
+    assert(psl); // 判断psl不为空指针
+    assert(psl->size > 0);
     psl->size--;
 }
 void SLPopFront(SL* psl)
 {
-    if(SLCheckSize(psl) == 1)
-    {
-        printf("顺序表已空\n");
-        return;
-    }
+    assert(psl); // 判断psl不为空指针
+    assert(psl->size > 0);
     for (int i = 1; i < psl->size; ++i)
     {
         psl->a[i - 1] = psl->a[i];
@@ -60,11 +55,7 @@ void SLInsert(SL* psl, int index, SLDataType x)
 {
     SLCheckCapacity(psl);
 
-    if(index > psl->size || index < 0)
-    {
-        printf("下标不合法\n");
-        return;
-    }
+    assert(index >= 0 && index <= psl->size);
     if(index == psl->size)
     {
         SLPushBack(psl, x);
@@ -86,7 +77,8 @@ void SLInsert(SL* psl, int index, SLDataType x)
 }
 void SLErase(SL* psl, int index)
 {
-    SLCheckSize(psl);
+    assert(psl);
+    assert(index >= 0 && index < psl->size);
     if(index > psl->size || index < 0)
     {
         printf("下标不合法\n");
@@ -128,6 +120,7 @@ int SLFind(SL* psl, SLDataType key)
 
 void SLCheckCapacity(SL* psl)
 {
+    assert(psl);
     if(psl->size == psl->capacity)
     {
         // 扩容
@@ -142,19 +135,12 @@ void SLCheckCapacity(SL* psl)
     }
 }
 
-int SLCheckSize(SL* psl)
-{
-    if(psl->size == 0)
-    {
-        return 1;
-    }
-    return 0;
-}
 
 
 
 void SLPrint(SL* psl)
 {
+    assert(psl);
     for (int i = 0; i < psl->size; ++i) {
         printf("%i ", psl->a[i]);
     }

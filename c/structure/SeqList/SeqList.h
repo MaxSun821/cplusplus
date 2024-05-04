@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 
 typedef int SLDataType;
@@ -30,7 +31,6 @@ void SLErase(SL* psl, int index);
 int SLFind(SL* psl, SLDataType key);
 
 void SLCheckCapacity(SL* psl); // 检查数组是否已满
-int SLCheckSize(SL* psl); // 检查数组是否已空
 
 void SLPrint(SL* psl);
 
