@@ -19,10 +19,8 @@ int main(void)
     SLPrint(&s);
 
 
-    SLErase(&s, 0);
-    SLErase(&s, 7);
-    SLErase(&s, 3);
-    SLPrint(&s);
+    int index = SLFind(&s, 3);
+    printf("%i\n", index);
 
     destroy(&s);
     return 0;
