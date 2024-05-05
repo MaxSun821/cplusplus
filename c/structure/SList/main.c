@@ -23,7 +23,7 @@ void SListTest2()
 
     SLPrint(head);
 
-    SLDestroy(head);
+    SLDestroy(&head);
 }
 
 void SListTest3()

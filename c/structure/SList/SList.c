@@ -68,7 +68,6 @@ void SLPopFront(ListNode** ppHead)
 
 ListNode* SLFind(ListNode* pHead, SListDataType x)
 {
-    assert(pHead);
     ListNode* cur = pHead;
     while(cur != NULL)
     {
@@ -149,15 +148,15 @@ void SLPrint(ListNode* pHead)
 }
 
 
-void SLDestroy(ListNode* pHead)
+void SLDestroy(ListNode** pHead)
 {
     // 销毁
-    ListNode* cur = pHead;
+    ListNode* cur = *pHead;
     while(cur != NULL)
     {
         ListNode* curNext = cur->next;
         free(cur);
         cur = curNext;
     }
-    pHead = NULL;
+    *pHead = NULL;
 }

@@ -29,6 +29,6 @@ void SLEraseAfter(ListNode** ppHead, ListNode* pos);
 
 
 
-void SLDestroy(ListNode* pHead);
+void SLDestroy(ListNode** pHead);
 
 #endif //C_SLIST_H
