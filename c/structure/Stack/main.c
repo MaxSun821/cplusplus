@@ -26,6 +26,6 @@ void StackTest1()
 
 int main(void)
 {
-	StackTest1();
+    StackTest1();
 	return 0;
 }

@@ -21,6 +21,7 @@ void STPush(Stack* st, STDataType x)
 			return;
 		}
 		st->a = tmp;
+        st->capacity = newCapacity;
 	}
 	st->a[st->top++] = x;
 }
