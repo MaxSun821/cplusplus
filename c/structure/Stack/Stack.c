@@ -24,8 +24,24 @@ void STPush(Stack* st, STDataType x)
 	}
 	st->a[st->top++] = x;
 }
-void STPop(Stack* st);
-STDataType STTop(Stack* st);
+void STPop(Stack* st)
+{
+	assert(!STEmpty(st));
 
-bool STEmpty(Stack* st);
-int STSize(Stack* st);
+	st->top--;
+}
+STDataType STTop(Stack* st)
+{
+	assert(!STEmpty(st));
+
+	return st->a[st->top - 1];
+}
+
+bool STEmpty(Stack* st)
+{
+	return st->top == 0;
+}
+int STSize(Stack* st)
+{
+	return st->top;
+}
