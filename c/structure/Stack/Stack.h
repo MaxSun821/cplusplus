@@ -22,3 +22,5 @@ STDataType STTop(Stack* st);
 
 bool STEmpty(Stack* st);
 int STSize(Stack* st);
+
+void STDestroy(Stack* st);

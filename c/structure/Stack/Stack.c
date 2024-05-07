@@ -45,3 +45,10 @@ int STSize(Stack* st)
 {
 	return st->top;
 }
+
+void STDestroy(Stack* st)
+{
+    free(st->a);
+    st->a = NULL;
+    st->top = st->capacity = 0;
+}
