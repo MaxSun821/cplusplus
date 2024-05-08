@@ -5,6 +5,7 @@ void QInit(Queue* q)
 	assert(q);
 	q->head = NULL;
 	q->tail = NULL;
+    q->size = 0;
 }
 
 QNode* QBuyNode(QDataType x)
@@ -32,41 +33,46 @@ void QPush(Queue* q, QDataType x)
 		q->tail->next = node;
 		q->tail = q->tail->next;
 	}
+    q->size++;
 }
 void QPop(Queue* q)
 {
 	assert(q);
 	assert(!QEmpty(q));
-	QNode* del = q->head;
-	q->head = del->next;
-	free(del);
-	del = NULL;
+    if(q->head->next == NULL)
+    {
+        free(q->head);
+        q->head = q->tail = NULL;
+    }
+    else
+    {
+        QNode *del = q->head;
+        q->head = del->next;
+        free(del);
+    }
+    q->size--;
 }
-QDataType QTop(Queue* q)
+QDataType QFront(Queue* q)
 {
 	assert(q);
 	assert(!QEmpty(q));
 	return q->head->val;
 }
+
+QDataType QBack(Queue* q)
+{
+    assert(q);
+    assert(!QEmpty(q));
+    return q->tail->val;
+}
 bool QEmpty(Queue* q)
 {
-	return q->head == NULL;
+	return q->size == 0;
 }
 int QSize(Queue* q)
 {
 	assert(q);
-	int count = 0;
-	if (QEmpty(q))
-	{
-		return count;
-	}
-	QNode* cur = q->head;
-	while (cur)
-	{
-		count++;
-		cur = cur->next;
-	}
-	return count;
+	return q->size;
 }
 
 void QDestroy(Queue* q)
@@ -78,4 +84,6 @@ void QDestroy(Queue* q)
 		free(cur);
 		cur = curNext;
 	}
+    q->head = q->tail = NULL;
+    q->size = 0;
 }

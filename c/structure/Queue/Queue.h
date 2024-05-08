@@ -17,6 +17,7 @@ typedef struct Queue
 {
 	QNode* head;
 	QNode* tail;
+    int size;
 }Queue;
 
 void QInit(Queue* q);
@@ -24,8 +25,12 @@ QNode* QBuyNode(QDataType x);
 
 void QPush(Queue* q, QDataType x);
 void QPop(Queue* q);
-QDataType QTop(Queue* q);
+QDataType QFront(Queue* q);
+QDataType QBack(Queue* q);
+
 bool QEmpty(Queue* q);
 int QSize(Queue* q);
+
+
 
 void QDestroy(Queue* q);
