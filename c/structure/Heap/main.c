@@ -25,11 +25,13 @@ void HeapTest2()
 		HeapPush(&hp, arr[i]);
 	}
 
-	HeapPush(&hp, 10);
-	HeapPush(&hp, 33);
-	
-	HeapPop(&hp);
-	int top = HeapTop(&hp);
+	while (!HeapEmpty(&hp))
+	{
+		printf("%i ", HeapTop(&hp));
+		HeapPop(&hp);
+	}
+	printf("\n");
+
 	HeapDestroy(&hp);
 }
 

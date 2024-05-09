@@ -8,11 +8,11 @@ void HeapInit(Heap* hp)
 	hp->capacity = 0;
 }
 
-void Swap(HPDataType* a, int x, int y)
+void Swap(HPDataType* p1, HPDataType* p2)
 {
-	HPDataType tmp = a[x];
-	a[x] = a[y];
-	a[y] = tmp;
+	HPDataType tmp = *p1;
+	*p1 = *p2;
+	*p2 = tmp;
 }
 
 void AdjustUp(HPDataType* a, int child)
@@ -23,7 +23,7 @@ void AdjustUp(HPDataType* a, int child)
 		if (a[child] < a[parent])
 		{
 			// 交换数据
-			Swap(a, child, parent);
+			Swap(&a[child], &a[parent]);
 		}
 		else
 		{
@@ -45,7 +45,7 @@ void AdjustDown(HPDataType* a, int parent, int size)
 		}
 		if (a[child] < a[parent])
 		{
-			Swap(a, child, parent);
+			Swap(&a[child], &a[parent]);
 		}
 		else
 		{
@@ -85,7 +85,7 @@ void HeapPop(Heap* hp)
 	assert(!HeapEmpty(hp));
 
 	// 删除头结点，交换头尾数据
-	Swap(hp->a, 0, hp->size - 1);
+	Swap(&hp->a[0], &hp->a[hp->size - 1]);
 	hp->size--;
 	// 向下调整成小根堆
 	AdjustDown(hp->a, 0, hp->size);
@@ -100,6 +100,11 @@ HPDataType HeapTop(Heap* hp)
 bool HeapEmpty(Heap* hp)
 {
 	return hp->size == 0;
+}
+
+int HeapSize(Heap* hp)
+{
+	return hp->size;
 }
 void HeapDestroy(Heap* hp)
 {

@@ -14,9 +14,12 @@ typedef struct Heap
 	int capacity; // 容量
 }Heap;
 
+void Swap(HPDataType* x, HPDataType* y);
+
 void HeapInit(Heap* hp);
 void HeapPush(Heap* hp, HPDataType x);
 void HeapPop(Heap* hp);
 HPDataType HeapTop(Heap* hp);
 bool HeapEmpty(Heap* hp);
+int HeapSize(Heap* hp);
 void HeapDestroy(Heap* hp);
