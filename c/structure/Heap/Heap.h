@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdbool.h>
+#include <time.h>
 
 typedef int HPDataType;
 
@@ -23,3 +24,6 @@ HPDataType HeapTop(Heap* hp);
 bool HeapEmpty(Heap* hp);
 int HeapSize(Heap* hp);
 void HeapDestroy(Heap* hp);
+
+void AdjustUp(HPDataType* a, int child);
+void AdjustDown(HPDataType* a, int parent, int size);
