@@ -53,5 +53,7 @@ int main(void) {
 
     BTLeverOrder(root);
 
+    BTDestroy(root);
+
     return 0;
 }
