@@ -24,3 +24,5 @@ int BTHeight(BTNode* root);
 int BTLevelSize(BTNode* root, int k);
 
 BTNode* BTFind(BTNode* root, BTDataType x);
+
+void BTLeverOrder(BTNode* root);

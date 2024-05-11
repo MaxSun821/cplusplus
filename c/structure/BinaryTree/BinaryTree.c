@@ -1,4 +1,5 @@
 #include "BinaryTree.h"
+#include "Queue.h"
 
 void PreOrder(BTNode *root) {
     if (root == NULL) {
@@ -93,4 +94,27 @@ BTNode* BTFind(BTNode* root, BTDataType x)
         return rightTree;
     }
     return NULL;
+}
+
+void BTLeverOrder(BTNode* root)
+{
+    Queue q;
+    QInit(&q);
+
+    if(root != NULL)
+        QPush(&q, root);
+    while(!QEmpty(&q))
+    {
+        BTNode* top = QFront(&q);
+        printf("%d ", top->val);
+        if(top->left != NULL)
+        {
+            QPush(&q, top->left);
+        }
+        if(top->right != NULL)
+        {
+            QPush(&q, top->right);
+        }
+        QPop(&q);
+    }
 }

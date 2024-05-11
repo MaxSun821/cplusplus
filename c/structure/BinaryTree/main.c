@@ -21,7 +21,7 @@ BTNode *createTree() {
     node2->left = node3;
     node1->right = node4;
     node4->left = node5;
-    node4->right = node5;
+    node4->right = node6;
 
     return node1;
 }
@@ -50,6 +50,8 @@ int main(void) {
     if (find != NULL) {
         printf("找到了\n");
     }
+
+    BTLeverOrder(root);
 
     return 0;
 }
