@@ -152,3 +152,16 @@ bool isComplete(BTNode* root)
     QDestroy(&q);
     return true;
 }
+
+void BTDestroy(BTNode* root)
+{
+    // 采用后序遍历来释放空间
+    if (root == NULL)
+    {
+        return;
+    }
+    BTDestroy(root->left);
+    BTDestroy(root->right);
+    free(root);
+    root = NULL;
+}

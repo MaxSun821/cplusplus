@@ -57,5 +57,7 @@ int main(void) {
     bool flag = isComplete(root);
     printf("%d\n", flag);
 
+    BTDestroy(root);
+
     return 0;
 }
