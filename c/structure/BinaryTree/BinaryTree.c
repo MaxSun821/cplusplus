@@ -117,4 +117,38 @@ void BTLeverOrder(BTNode* root)
         }
         QPop(&q);
     }
+    QDestroy(&q);
+}
+
+bool isComplete(BTNode* root)
+{
+    Queue q;
+    QInit(&q);
+
+    if(root != NULL)
+    {
+        QPush(&q, root);
+    }
+    while(!QEmpty(&q)) {
+        BTNode *top = QFront(&q);
+        QPop(&q);
+        if (top == NULL)
+        {
+            break;
+        }
+        QPush(&q, top->left);
+        QPush(&q, top->right);
+    }
+    while(!QEmpty(&q))
+    {
+        BTNode *top = QFront(&q);
+        QPop(&q);
+        if(top)
+        {
+            QDestroy(&q);
+            return false;
+        }
+    }
+    QDestroy(&q);
+    return true;
 }

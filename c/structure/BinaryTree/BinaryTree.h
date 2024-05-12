@@ -26,3 +26,5 @@ int BTLevelSize(BTNode* root, int k);
 BTNode* BTFind(BTNode* root, BTDataType x);
 
 void BTLeverOrder(BTNode* root);
+
+bool isComplete(BTNode* root);

@@ -16,6 +16,7 @@ BTNode *createTree() {
     BTNode *node4 = buyNode(4);
     BTNode *node5 = buyNode(5);
     BTNode *node6 = buyNode(6);
+    BTNode *node7 = buyNode(7);
 
     node1->left = node2;
     node2->left = node3;
@@ -52,6 +53,9 @@ int main(void) {
     }
 
     BTLeverOrder(root);
+    printf("\n");
+    bool flag = isComplete(root);
+    printf("%d\n", flag);
 
     return 0;
 }
