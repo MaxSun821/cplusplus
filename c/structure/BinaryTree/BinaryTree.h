@@ -28,3 +28,5 @@ BTNode* BTFind(BTNode* root, BTDataType x);
 void BTLeverOrder(BTNode* root);
 
 void BTDestroy(BTNode* root);
+
+bool isComplete(BTNode* root);
