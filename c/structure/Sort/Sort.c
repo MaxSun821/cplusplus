@@ -1,4 +1,5 @@
 #include "Sort.h"
+#include "Stack.h"
 
 
 void swap(int* a, int* b)
@@ -154,9 +155,48 @@ void HeapSort(int* a, int size)
 		--end;
 	}
 }
+
+// 三数取中
+int GetMid(int* a, int left, int right)
+{
+	int mid = (left + right) / 2;
+	if (a[mid] < a[left])
+	{
+		if (a[right] < a[mid])
+		{
+			return mid;
+		}
+		else if (a[right] < a[left])
+		{
+			return right;
+		}
+		else
+		{
+			return left;
+		}
+	}
+	else
+	{
+		if (a[right] < a[left])
+		{
+			return left;
+		}
+		else if (a[mid] > a[right])
+		{
+			return right;
+		}
+		else
+		{
+			return mid;
+		}
+	}
+}
+
 // hoare法
 int _quickSort1(int* a, int left, int right)
 {
+	int mid = GetMid(a, left, right);
+	swap(&a[left], &a[mid]);
 	int keyi = left;
 	while (left < right)
 	{
@@ -176,6 +216,8 @@ int _quickSort1(int* a, int left, int right)
 // 挖坑法
 int _quickSort2(int* a, int left, int right)
 {
+	/*int mid = GetMid(a, left, right);
+	swap(&a[left], &a[mid]);*/
     int key = a[left];
     int keyi = left;
     while(left < right)
@@ -200,6 +242,8 @@ int _quickSort2(int* a, int left, int right)
 // 前后指针法
 int _quickSort3(int* a, int left, int right)
 {
+	int mid = GetMid(a, left, right);
+	swap(&a[left], &a[mid]);
     int prev = left, cur = left + 1;
     int keyi = left;
     while(cur <= right)
@@ -223,9 +267,37 @@ void QuickSort(int* a, int begin, int end)
 	}
 //	int keyi = _quickSort1(a, begin, end);
 //    int keyi = _quickSort2(a, begin, end);
-    int keyi = _quickSort3(a, begin, end);
+    int keyi = _quickSort1(a, begin, end);
 	QuickSort(a, begin, keyi - 1);
 	QuickSort(a, keyi + 1, end);
+}
+
+void QuickSortNonR(int* a, int begin, int end)
+{
+	Stack st;
+	STInit(&st); // 初始化栈
+	STPush(&st, end);
+	STPush(&st, begin);
+
+	while (!STEmpty(&st))
+	{
+		int left = STTop(&st);
+		STPop(&st);
+		int right = STTop(&st);
+		STPop(&st);
+		int keyi = _quickSort1(a, left, right);
+		if (keyi + 1 < right)
+		{
+			STPush(&st, right);
+			STPush(&st, keyi + 1);
+		}
+		if (left + 1 < keyi - 1)
+		{
+			STPush(&st, keyi - 1);
+			STPush(&st, left);
+		}
+	}
+	STDestroy(&st);
 }
 
 void PrintArray(int* a, int size)
