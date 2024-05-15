@@ -154,7 +154,7 @@ void HeapSort(int* a, int size)
 		--end;
 	}
 }
-
+// hoare法
 int _quickSort1(int* a, int left, int right)
 {
 	int keyi = left;
@@ -173,6 +173,47 @@ int _quickSort1(int* a, int left, int right)
 	swap(&a[keyi], &a[left]);
 	return left;
 }
+// 挖坑法
+int _quickSort2(int* a, int left, int right)
+{
+    int key = a[left];
+    int keyi = left;
+    while(left < right)
+    {
+        while (left < right && a[right] >= key)
+        {
+            --right;
+        }
+        a[keyi] = a[right];
+        keyi = right;
+        while (left < right && a[left] <= key)
+        {
+            ++left;
+        }
+        a[keyi] = a[left];
+        keyi = left;
+    }
+    a[keyi] = key;
+    return keyi;
+}
+
+// 前后指针法
+int _quickSort3(int* a, int left, int right)
+{
+    int prev = left, cur = left + 1;
+    int keyi = left;
+    while(cur <= right)
+    {
+        if(a[cur] < a[keyi] && ++prev != cur)
+        {
+            swap(&a[prev], &a[cur]);
+        }
+        ++cur;
+    }
+    swap(&a[keyi], &a[prev]);
+    keyi = prev;
+    return keyi;
+}
 
 void QuickSort(int* a, int begin, int end)
 {
@@ -180,7 +221,9 @@ void QuickSort(int* a, int begin, int end)
 	{
 		return;
 	}
-	int keyi = _quickSort1(a, begin, end);
+//	int keyi = _quickSort1(a, begin, end);
+//    int keyi = _quickSort2(a, begin, end);
+    int keyi = _quickSort3(a, begin, end);
 	QuickSort(a, begin, keyi - 1);
 	QuickSort(a, keyi + 1, end);
 }
