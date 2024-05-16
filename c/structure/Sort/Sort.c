@@ -300,6 +300,122 @@ void QuickSortNonR(int* a, int begin, int end)
 	STDestroy(&st);
 }
 
+void _MergeSort(int* a, int begin, int end, int* tmp)
+{
+    if(begin == end)
+    {
+        return;
+    }
+    int mid = (begin + end) / 2;
+    _MergeSort(a, begin, mid, tmp);
+    _MergeSort(a, mid + 1, end, tmp);
+
+    int b1 = begin, e1 = mid;
+    int b2 = mid + 1, e2 = end;
+    int i = begin;
+
+    while(b1 <= e1 && b2 <= e2)
+    {
+        if(a[b1] <= a[b2])
+        {
+            tmp[i++] = a[b1++];
+        }
+        else
+        {
+            tmp[i++] = a[b2++];
+        }
+    }
+
+    while(b1 <= e1)
+    {
+        tmp[i++] = a[b1++];
+    }
+    while(b2 <= e2)
+    {
+        tmp[i++] = a[b2++];
+    }
+
+    memcpy(a + begin, tmp + begin, sizeof(int) * (end - begin + 1));
+}
+
+void MergeSort(int* a, int size)
+{
+    int* tmp = (int*)malloc(sizeof(int) * size);
+    _MergeSort(a, 0, size - 1, tmp);
+    free(tmp);
+}
+
+void MergeSortNonR(int* a, int size)
+{
+    int* tmp = (int*)malloc(sizeof(int) * size);
+
+    int gap = 1;
+    while(gap < size) {
+        int k = 0;
+        for (int i = 0; i < size; i += 2 * gap) {
+            int b1 = i, e1 = i + gap - 1;
+            int b2 = i + gap, e2 = i + 2 * gap - 1;
+
+            if (e1 >= size || b2 >= size) {
+                break;
+            }
+            if (e2 >= size) {
+                e2 = size - 1;
+            }
+
+            while (b1 <= e1 && b2 <= e2) {
+                if (a[b1] <= a[b2]) {
+                    tmp[k++] = a[b1++];
+                } else {
+                    tmp[k++] = a[b2++];
+                }
+            }
+
+            while (b1 <= e1) {
+                tmp[k++] = a[b1++];
+            }
+            while (b2 <= e2) {
+                tmp[k++] = a[b2++];
+            }
+            memcpy(a + i, tmp + i, sizeof(int) * (e2 - i + 1));
+        }
+        gap *= 2;
+    }
+
+    free(tmp);
+}
+
+void CountSort(int* a, int size)
+{
+    int min = a[0];
+    int max = a[0];
+    for (int i = 1; i < size; ++i) {
+        if(a[i] < min)
+        {
+            min = a[i];
+        }
+        if(a[i] > max)
+        {
+            max = a[i];
+        }
+    }
+    int range = max - min + 1;
+    int* tmp = (int*)malloc(sizeof(int) * range);
+    memset(tmp, 0, sizeof(int) * range);
+
+    for (int i = 0; i < size; ++i) {
+        tmp[a[i] - min] += 1;
+    }
+    int k = 0;
+    for (int i = 0; i < range; ++i) {
+        while(tmp[i]--)
+        {
+            a[k++] = i + min;
+        }
+    }
+    free(tmp);
+}
+
 void PrintArray(int* a, int size)
 {
 	for (int i = 0; i < size; i++)
