@@ -6,11 +6,7 @@ using namespace std;
 
 class Date {
 public:
-	Date(int year = 1970, int month = 1, int day = 1) {
-		_year = year;
-		_month = month;
-		_day = day;
-	}
+	Date(int year = 1970, int month = 1, int day = 1);
 	int getMonthDay(int year, int month);
 	bool operator<(Date d);
 	bool operator==(Date d);
@@ -19,6 +15,7 @@ public:
 	bool operator>=(Date d);
 	bool operator!=(Date d);
 
+    Date& operator=(const Date& d);
 	Date& operator+=(int day);
 	Date operator+(int day);
 	Date& operator-=(int day);
