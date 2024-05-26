@@ -16,7 +16,7 @@ void Date::print() const {
     cout << _year << "/" << _month << "/" << _day << endl;
 }
 
-bool Date::operator<(Date d) {
+bool Date::operator<(Date d) const {
     if (_year < d._year) {
         return true;
     } else if (_year == d._year && _month < d._month) {
@@ -27,23 +27,23 @@ bool Date::operator<(Date d) {
     return false;
 }
 
-bool Date::operator==(Date d) {
+bool Date::operator==(Date d) const {
     return _year == d._year && _month == d._month && _day == d._day;
 }
 
-bool Date::operator<=(Date d) {
+bool Date::operator<=(Date d) const {
     return (*this) < d || (*this) == d;
 }
 
-bool Date::operator>(Date d) {
+bool Date::operator>(Date d) const {
     return !((*this) <= d);
 }
 
-bool Date::operator>=(Date d) {
+bool Date::operator>=(Date d) const {
     return !((*this) < d);
 }
 
-bool Date::operator!=(Date d) {
+bool Date::operator!=(Date d) const {
     return !((*this) == d);
 }
 
@@ -57,7 +57,7 @@ Date &Date::operator=(const Date &d) {
 }
 
 Date &Date::operator+=(int day) {
-    if(day < 0) {
+    if (day < 0) {
         return *this -= (-day);
     }
     _day += day;
@@ -72,14 +72,14 @@ Date &Date::operator+=(int day) {
     return *this;
 }
 
-Date Date::operator+(int day) {
+Date Date::operator+(int day) const {
     Date tmp(*this);
     tmp += day;
     return tmp;
 }
 
 Date &Date::operator-=(int day) {
-    if(day < 0) {
+    if (day < 0) {
         return *this += (-day);
     }
     _day -= day;
@@ -95,13 +95,13 @@ Date &Date::operator-=(int day) {
     return *this;
 }
 
-Date Date::operator-(int day) {
+Date Date::operator-(int day) const {
     Date tmp(*this);
     tmp -= day;
     return tmp;
 }
 
-int Date::operator-(const Date& d) {
+int Date::operator-(const Date &d) const {
     int count = 0;
     Date less(*this);
     Date more(d);
@@ -116,17 +116,20 @@ int Date::operator-(const Date& d) {
     return count;
 }
 
-Date& Date::operator++() {
+Date &Date::operator++() {
     return *this += 1;
 }
+
 Date Date::operator++(int) {
     Date tmp = *this;
     *this += 1;
     return tmp;
 }
-Date& Date::operator--() {
+
+Date &Date::operator--() {
     return *this -= 1;
 }
+
 Date Date::operator--(int) {
     Date tmp = *this;
     *this -= 1;
@@ -141,4 +144,14 @@ int Date::getMonthDay(int year, int month) {
     }
 
     return monthArray[month];
+}
+
+ostream &operator<<(ostream &out, const Date &d) {
+    out << d._year << "/" << d._month << "/" << d._day;
+    return out;
+}
+
+istream &operator>>(istream &in, Date &d) {
+    in >> d._year >> d._month >> d._day;
+    return in;
 }
