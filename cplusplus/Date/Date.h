@@ -20,8 +20,12 @@ public:
 	Date operator+(int day);
 	Date& operator-=(int day);
 	Date operator-(int day);
-	int operator-(Date d);
-	void print();
+	int operator-(const Date& d);
+    Date& operator++();
+    Date operator++(int);
+    Date& operator--();
+    Date operator--(int);
+	void print() const;
 private:
 	int _year;
 	int _month;

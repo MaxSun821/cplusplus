@@ -12,7 +12,7 @@ Date::Date(int year, int month, int day) {
     }
 }
 
-void Date::print() {
+void Date::print() const {
     cout << _year << "/" << _month << "/" << _day << endl;
 }
 
@@ -101,7 +101,7 @@ Date Date::operator-(int day) {
     return tmp;
 }
 
-int Date::operator-(Date d) {
+int Date::operator-(const Date& d) {
     int count = 0;
     Date less(*this);
     Date more(d);
@@ -114,6 +114,23 @@ int Date::operator-(Date d) {
         less += 1;
     }
     return count;
+}
+
+Date& Date::operator++() {
+    return *this += 1;
+}
+Date Date::operator++(int) {
+    Date tmp = *this;
+    *this += 1;
+    return tmp;
+}
+Date& Date::operator--() {
+    return *this -= 1;
+}
+Date Date::operator--(int) {
+    Date tmp = *this;
+    *this -= 1;
+    return tmp;
 }
 
 int Date::getMonthDay(int year, int month) {
