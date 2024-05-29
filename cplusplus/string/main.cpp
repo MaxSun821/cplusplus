@@ -1,3 +1,10 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+
+#include <iostream>
+#include <cassert>
+#include <string>
+
+
 #include "string.h"
 
 
@@ -53,6 +60,11 @@ int main() {
 	//test_string1();
 //	test_string2();
 //    test_string3();
-    max::test_string1();
+    //max::test_string1();
+	//max::test_string2();
+	//max::test_string3();
+	//max::test_string4();
+	//max::test_string5();
+	max::test_string6();
 	return 0;
 }
