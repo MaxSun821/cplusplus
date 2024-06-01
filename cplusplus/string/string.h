@@ -3,6 +3,11 @@
 #ifndef CPLUSPLUS_STRING_H
 #define CPLUSPLUS_STRING_H
 
+#include <iostream>
+#include <cassert>
+#include <string>
+#include <cstring>
+
 namespace max {
     class string {
     public:
@@ -111,15 +116,13 @@ namespace max {
                 _str[end + len - 1] = _str[end - 1];
                 --end;
             }
-            for (size_t i = 0; i < len; i++) {
-                _str[pos + i] = str[i];
-            }
+            strncpy(_str + pos, str, len);
             _size += len;
             return *this;
         }
         string& erase(size_t pos, size_t len = npos) {
             assert(pos < _size);
-            if (len >= _size) {
+            if (len == npos || pos + len > _size) {
                 _str[pos] = '\0';
                 _size = pos;
             }
@@ -276,6 +279,11 @@ namespace max {
         string s1("helloy");
         string s2("helloxxxxxxxxxxxx");
         std::cout << (s1 > s2) << std::endl;
+    }
+    void test_string7() {
+        string s1("hello ");
+        s1.insert(0, "world ");
+        std::cout << s1 << std::endl;
     }
 }
 
