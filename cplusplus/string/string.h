@@ -27,6 +27,41 @@ namespace max {
             _str = new char[_capacity + 1];
             strcpy(_str, str);
         }
+
+//        string(const string& s) {
+//            _str = new char[s._capacity + 1];
+//            strcpy(_str, s._str);
+//            _size = s._size;
+//            _capacity = s._capacity;
+//        }
+//        string& operator=(const string& s) {
+//            if(this != &s) {
+//                char* tmp = new char[s._capacity + 1];
+//                strcpy(tmp, s._str);
+//                delete[] _str;
+//                _str = tmp;
+//                _size = s._size;
+//                _capacity = s._capacity;
+//            }
+//            return *this;
+//        }
+        void swap(string& s) {
+            std::swap(_str, s._str);
+            std::swap(_size, s._size);
+            std::swap(_capacity, s._capacity);
+        }
+        string(const string& s)
+        :_str(nullptr)
+        ,_size(0)
+        ,_capacity(_size)
+        {
+            string tmp(s._str);
+            swap(tmp);
+        }
+        string& operator=(string s) {
+            swap(s);
+            return *this;
+        }
         ~string() {
             delete[] _str;
             _str = nullptr;
@@ -136,6 +171,47 @@ namespace max {
             }
             return *this;
         }
+        void resize(size_t n, char ch = '\0') {
+            if(n < _size) {
+                _str[n] = '\0';
+                _size = n;
+            } else {
+                reserve(n);
+                while(_size < n) {
+                    _str[_size] = ch;
+                    _size++;
+                }
+                _str[_size] = '\0';
+            }
+        }
+        size_t find(char ch, size_t pos = 0) {
+            for (size_t i = pos; i < _size; ++i) {
+                if(_str[i] == ch) {
+                    return i;
+                }
+            }
+            return npos;
+        }
+        size_t find(const char* s, size_t pos = 0) {
+            const char* sub = strstr(_str + pos, s);
+            if(sub) {
+                return sub - _str;
+            }
+            return npos;
+        }
+        string substr(size_t pos = 0, size_t len = npos) {
+            string tmp;
+            size_t end = pos + len;
+            if(len == npos || len >= _size) {
+                len = _size - pos;
+                end = _size;
+            }
+            tmp.reserve(len);
+            for (size_t i = pos; i < end; ++i) {
+                tmp += _str[i];
+            }
+            return tmp;
+        }
         bool operator==(const string& s) {
             return strcmp(_str, s._str) == 0;
         }
@@ -176,11 +252,22 @@ namespace max {
     }
     std::istream& operator>>(std::istream& in, string& s) {
         s.clear();
+        char buff[129];
+        size_t i = 0;
+
         char ch;
-        in.get(ch);
+        ch = in.get();
         while (ch != ' ' && ch != '\n') {
-            s += ch;
-            in.get(ch);
+            buff[i++] = ch;
+            if(i == 128) {
+                s += buff;
+                i = 0;
+            }
+            ch = in.get();
+        }
+        if(i != 0) {
+            buff[i] = '\0';
+            s += buff;
         }
         return in;
     }
@@ -284,6 +371,35 @@ namespace max {
         string s1("hello ");
         s1.insert(0, "world ");
         std::cout << s1 << std::endl;
+    }
+
+    void test_string8() {
+        string s1("hello world");
+        string s2(s1);
+        std::cout << s2 << std::endl;
+        string s3;
+        s3 = s2;
+        std::cout << s3 << std::endl;
+
+    }
+
+    void test_string9() {
+        string s = "hello world";
+        s.resize(15, 'x');
+        std::cout << s << std::endl;
+
+    }
+    void test_string10() {
+        std::string s1 = "https://cplusplus.com/reference/string/string/?kw=string";
+        size_t i1 = s1.find(':');
+        std::string sub1, sub2, sub3;
+        sub1 = s1.substr(0, i1);
+        size_t i2 = s1.find('/', i1 + 3);
+        sub2 = s1.substr(i1 + 3, i2);
+        sub3 = s1.substr(i2 + 1);
+        std::cout << sub1 << std::endl;
+        std::cout << sub2 << std::endl;
+        std::cout << sub3 << std::endl;
     }
 }
 

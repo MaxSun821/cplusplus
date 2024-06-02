@@ -54,6 +54,18 @@ void test_string3() {
     std::cout << sub3 << std::endl;
 }
 
+void test_string4() {
+    std::string s1 = "hello world";
+    std::cout << s1.size() << std::endl;
+    s1.resize(15, 'x');
+    std::cout << s1.size() << std::endl;
+
+    s1 += "no thanks";
+    std::cout << s1 << std::endl;
+    std::cout << s1.size() << std::endl;
+
+}
+
 int main() {
 	//test_string1();
 //	test_string2();
@@ -62,8 +74,12 @@ int main() {
 	//max::test_string2();
 	//max::test_string3();
 	//max::test_string4();
-	//max::test_string5();
+	max::test_string5();
 //	max::test_string6();
-    max::test_string7();
+//    max::test_string7();
+//    test_string4();
+//    max::test_string8();
+//    max::test_string9();
+//    max::test_string10();
 	return 0;
 }
