@@ -24,6 +24,8 @@ int main() {
 //    test_vector1();
 //    max::test_vector1();
 //    max::test_vector2();
-    max::test_vector3();
+//    max::test_vector3();
+//    max::test_vector4();
+    max::test_vector5();
     return 0;
 }

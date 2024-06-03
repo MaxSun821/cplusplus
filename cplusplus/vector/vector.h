@@ -11,91 +11,143 @@ namespace max {
     template<class T>
     class vector {
     public:
-        typedef T* iterator;
-        typedef const T* const_iterator;
+        typedef T *iterator;
+        typedef const T *const_iterator;
 
         vector()
-        :_first(nullptr)
-        ,_finish(nullptr)
-        ,_end_of_storage(nullptr)
-        {}
+                : _first(nullptr), _finish(nullptr), _end_of_storage(nullptr) {}
+
         ~vector() {
             delete[] _first;
             _first = _finish = _end_of_storage = nullptr;
         }
+
+        vector(const vector<T> &v)
+                : _first(nullptr), _finish(nullptr), _end_of_storage(nullptr) {
+            reserve(v.capacity());
+            for (auto e: v) {
+                push_back(e);
+            }
+        }
+
+        void swap(vector<T> &v) {
+            std::swap(_first, v._first);
+            std::swap(_finish, v._finish);
+            std::swap(_end_of_storage, v._end_of_storage);
+        }
+
+        vector<T> &operator=(vector<T> tmp) {
+            swap(tmp);
+            return *this;
+        }
+
         void reserve(size_t n) {
             // 当n大于容量时才需要扩容
-            if(n > capacity()) {
-                T* tmp = new T[n];
-                memcpy(tmp, _first, size() * sizeof(T));
-                delete[] _first;
+            if (n > capacity()) {
+                size_t sz = size();
+                T *tmp = new T[n];
+                if (_first) {
+                    for (int i = 0; i < sz; ++i) {
+                        tmp[i] = _first[i];
+                    }
+                    delete[] _first;
+                }
                 _first = tmp;
+                _finish = _first + sz;
                 _end_of_storage = _first + n;
             }
         }
-        void push_back(const T& val) {
-            size_t sz = size();
-            if(_finish == _end_of_storage) {
-                // 扩容
-                size_t cap = capacity() == 0 ? 5 : 2 * capacity();
-                reserve(cap);
-            }
-            _finish = _first + sz;
-            *_finish = val;
-            _finish++;
+
+        void push_back(const T &val) {
+//            if (_finish == _end_of_storage) {
+//                // 扩容
+//                reserve(capacity() == 0 ? 5 : 2 * capacity());
+//            }
+//            *_finish = val;
+//            _finish++;
+            insert(_finish, val);
         }
+
         void pop_back() {
             assert(_finish > _first);
             --_finish;
         }
-        T& operator[](size_t pos) {
+
+        T &operator[](size_t pos) {
             assert(pos < size());
             return *(_first + pos);
         }
-        const T& operator[](size_t pos) const {
+
+        const T &operator[](size_t pos) const {
             assert(pos < size());
             return *(_first + pos);
         }
-        iterator find(iterator first, iterator finish, const T& val) {
-            while(first != finish) {
-                if(*first == val) {
+
+        iterator find(iterator first, iterator finish, const T &val) {
+            while (first != finish) {
+                if (*first == val) {
                     return first;
                 }
                 ++first;
             }
             return nullptr;
         }
-        void insert(iterator pos, const T& val) {
+
+        iterator insert(iterator pos, const T &val) {
+            assert(pos >= _first);
             assert(pos <= _finish);
-            if(_finish == _end_of_storage) {
-                reserve(2 * capacity());
+            if (_finish == _end_of_storage) {
+                // 解决迭代器失效问题
+                size_t n = pos - _first;
+                reserve(capacity() == 0 ? 5 : 2 * capacity());
+                pos = _first + n;
             }
             iterator end = _finish;
-            while(end >= pos) {
-                *(end + 1) = *end;
+            while (end >= pos) {
+                *end = *(end - 1);
                 --end;
             }
             *pos = val;
             ++_finish;
+            return pos;
         }
-        size_t size() {
+
+        iterator erase(iterator pos) {
+            assert(pos >= _first);
+            assert(pos < _finish);
+            iterator end = pos + 1;
+            while (end < _finish) {
+                *(end - 1) = *end;
+                ++end;
+            }
+            --_finish;
+            return pos;
+        }
+
+        size_t size() const {
             return _finish - _first;
         }
-        size_t capacity() {
+
+        size_t capacity() const {
             return _end_of_storage - _first;
         }
+
         iterator begin() {
             return _first;
         }
+
         iterator end() {
             return _finish;
         }
+
         const_iterator begin() const {
             return _first;
         }
+
         const_iterator end() const {
             return _finish;
         }
+
     private:
         iterator _first;
         iterator _finish;
@@ -117,13 +169,13 @@ namespace max {
         std::cout << std::endl;
 
         vector<int>::iterator it = v.begin();
-        while(it != v.end()) {
+        while (it != v.end()) {
             std::cout << *it << " ";
             ++it;
         }
         std::cout << std::endl;
 
-        for(auto i : v) {
+        for (auto i: v) {
             std::cout << i << " ";
         }
         std::cout << std::endl;
@@ -131,7 +183,12 @@ namespace max {
         vector<std::string> v2;
         v2.push_back("hello");
         v2.push_back("world");
-        for(auto i : v2) {
+        v2.push_back("nice ");
+        v2.push_back("to ");
+        v2.push_back("meet ");
+        v2.push_back("you!");
+
+        for (auto i: v2) {
             std::cout << i << " ";
         }
         std::cout << std::endl;
@@ -145,69 +202,122 @@ namespace max {
         v.push_back(4);
         v.push_back(5);
         v.push_back(6);
-        for(auto i : v) {
+        for (auto i: v) {
             std::cout << i << " ";
         }
         std::cout << std::endl;
 
         v.pop_back();
-        for(auto i : v) {
+        for (auto i: v) {
             std::cout << i << " ";
         }
         std::cout << std::endl;
         v.pop_back();
-        for(auto i : v) {
+        for (auto i: v) {
             std::cout << i << " ";
         }
         std::cout << std::endl;
         v.pop_back();
-        for(auto i : v) {
+        for (auto i: v) {
             std::cout << i << " ";
         }
         std::cout << std::endl;
         v.pop_back();
-        for(auto i : v) {
+        for (auto i: v) {
             std::cout << i << " ";
         }
         std::cout << std::endl;
         v.pop_back();
-        for(auto i : v) {
+        for (auto i: v) {
             std::cout << i << " ";
         }
         std::cout << std::endl;
         v.pop_back();
-        for(auto i : v) {
+        for (auto i: v) {
             std::cout << i << " ";
         }
         std::cout << std::endl;
         v.pop_back();
-        for(auto i : v) {
+        for (auto i: v) {
             std::cout << i << " ";
         }
         std::cout << std::endl;
     }
+
     void test_vector3() {
         vector<int> v;
         v.push_back(1);
         v.push_back(2);
         v.push_back(3);
         v.push_back(4);
-        v.push_back(5);
-        v.push_back(6);
-        for(auto i : v) {
+        for (auto i: v) {
             std::cout << i << " ";
         }
         std::cout << std::endl;
 
         auto pos = v.find(v.begin(), v.end(), 3);
         v.insert(pos, 30);
-        for(auto i : v) {
+        for (auto i: v) {
             std::cout << i << " ";
         }
         std::cout << std::endl;
         pos = v.find(v.begin(), v.end(), 1);
         v.insert(pos, 10);
-        for(auto i : v) {
+        for (auto i: v) {
+            std::cout << i << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    void test_vector4() {
+        vector<int> v;
+        v.push_back(1);
+        v.push_back(2);
+        v.push_back(2);
+        v.push_back(4);
+        v.push_back(7);
+        v.push_back(5);
+        v.push_back(8);
+
+        for (auto i: v) {
+            std::cout << i << " ";
+        }
+        std::cout << std::endl;
+        auto it = v.begin();
+        while (it != v.end()) {
+            if (*it % 2 == 0) {
+                v.erase(it);
+            } else {
+                ++it;
+            }
+        }
+        for (auto i: v) {
+            std::cout << i << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    void test_vector5() {
+        vector<std::string> v1;
+        v1.push_back("hello");
+        v1.push_back("world");
+        v1.push_back("nice");
+        v1.push_back("to");
+        v1.push_back("meet");
+        v1.push_back("you!");
+
+        vector<std::string> v2(v1);
+        for (auto i: v2) {
+            std::cout << i << " ";
+        }
+        std::cout << std::endl;
+
+        vector<std::string> v3;
+        v3.push_back("no");
+        v3.push_back("thank you");
+
+        v1 = v3;
+        for (auto i: v1) {
             std::cout << i << " ";
         }
         std::cout << std::endl;
