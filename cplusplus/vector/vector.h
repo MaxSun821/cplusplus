@@ -14,19 +14,41 @@ namespace max {
         typedef T *iterator;
         typedef const T *const_iterator;
 
-        vector()
-                : _first(nullptr), _finish(nullptr), _end_of_storage(nullptr) {}
+        vector() {}
 
         ~vector() {
             delete[] _first;
             _first = _finish = _end_of_storage = nullptr;
         }
 
-        vector(const vector<T> &v)
-                : _first(nullptr), _finish(nullptr), _end_of_storage(nullptr) {
+        vector(const vector<T> &v) {
             reserve(v.capacity());
             for (auto e: v) {
                 push_back(e);
+            }
+        }
+
+        template <class InputIterator>
+        vector(InputIterator first, InputIterator last) {
+            while (first != last) {
+                push_back(*first);
+                ++first;
+            }
+        }
+
+        vector(size_t n, const T& val = T()) {
+            reserve(n);
+            for (size_t i = 0; i < n; i++)
+            {
+                push_back(val);
+            }
+        }
+
+        vector(int n, const T& val = T()) {
+            reserve(n);
+            for (int i = 0; i < n; i++)
+            {
+                push_back(val);
             }
         }
 
@@ -47,7 +69,7 @@ namespace max {
                 size_t sz = size();
                 T *tmp = new T[n];
                 if (_first) {
-                    for (int i = 0; i < sz; ++i) {
+                    for (size_t i = 0; i < sz; ++i) {
                         tmp[i] = _first[i];
                     }
                     delete[] _first;
@@ -149,9 +171,9 @@ namespace max {
         }
 
     private:
-        iterator _first;
-        iterator _finish;
-        iterator _end_of_storage;
+        iterator _first = nullptr;
+        iterator _finish = nullptr;
+        iterator _end_of_storage = nullptr;
     };
 
     void test_vector1() {
@@ -318,6 +340,28 @@ namespace max {
 
         v1 = v3;
         for (auto i: v1) {
+            std::cout << i << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    void test_vector6() {
+        vector<int> v1;
+        v1.push_back(1);
+        v1.push_back(2);
+        v1.push_back(3);
+        v1.push_back(4);
+        v1.push_back(5);
+        v1.push_back(6);
+
+        vector<int> v2(v1.begin() + 1, v1.end() - 1);
+        for (auto i : v2) {
+            std::cout << i << " ";
+        }
+        std::cout << std::endl;
+
+        vector<int> v3(10, 1);
+        for (auto i : v3) {
             std::cout << i << " ";
         }
         std::cout << std::endl;
