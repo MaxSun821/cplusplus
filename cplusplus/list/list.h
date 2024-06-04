@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 namespace max {
     template<class T>
@@ -16,10 +17,10 @@ namespace max {
                 : _val(val), _prev(nullptr), _next(nullptr) {}
     };
 
-    template<class T>
+    template<class T, class Ref, class Ptr>
     struct __list_iterator {
         typedef list_node<T> Node;
-        typedef __list_iterator<T> self;
+        typedef __list_iterator<T, Ref, Ptr> self;
 
         Node *_node;
 
@@ -48,12 +49,20 @@ namespace max {
             return tmp;
         }
 
-        T &operator*() {
+        Ref operator*() {
             return _node->_val;
+        }
+
+        Ptr operator->() {
+            return &_node->_val;
         }
 
         bool operator!=(const self &it) {
             return _node != it._node;
+        }
+
+        bool operator==(const self& it) {
+            return _node == it._node;
         }
     };
 
@@ -62,7 +71,8 @@ namespace max {
         typedef list_node<T> Node;
 
     public:
-        typedef __list_iterator<T> iterator;
+        typedef __list_iterator<T, T&, T*> iterator;
+        typedef __list_iterator<T, const T&, const T*> const_iterator;
 
         list() {
             empty_init();
@@ -145,6 +155,14 @@ namespace max {
             return _head;
         }
 
+        const_iterator begin() const{
+            return _head->_next;
+        }
+
+        const_iterator end() const{
+            return _head;
+        }
+
         ~list() {
             clear();
             delete _head;
@@ -166,6 +184,17 @@ namespace max {
         Node *_head;
         size_t _size;
     };
+
+//    template <class T>
+    template <class Container>
+    void print_list(const Container& lt) {
+        typename Container::const_iterator it = lt.begin();
+        while(it != lt.end()) {
+            std::cout << *it << " ";
+            it++;
+        }
+        std::cout << std::endl;
+    }
 
     void test_list1() {
         list<int> lt;
@@ -220,6 +249,20 @@ namespace max {
             std::cout << e << " ";
         }
         std::cout << std::endl;
+    }
+    void test_list3() {
+        list<int> lt;
+        lt.push_back(1);
+        lt.push_back(2);
+        lt.push_back(3);
+        lt.push_back(4);
+        lt.push_back(5);
+        print_list(lt);
+
+        std::vector<std::string> v;
+        v.push_back("abc");
+        v.push_back("def");
+        print_list(v);
 
     }
 }
