@@ -1,7 +1,9 @@
 #include "stack.h"
 #include "queue.h"
+#include "priority_queue.h"
 #include <vector>
 #include <list>
+#include <queue>
 
 
 void test_stack1() {
@@ -40,9 +42,44 @@ void test_queue() {
 
 }
 
+void test_priority_queue1() {
+    std::priority_queue<int> pq;
+    pq.push(3);
+    pq.push(9);
+    pq.push(6);
+    pq.push(2);
+    pq.push(1);
+    pq.push(8);
+
+    std::cout << pq.top() << std::endl;
+
+    while (!pq.empty()) {
+        std::cout << pq.top() << std::endl;
+        pq.pop();
+    }
+}
+void test_priority_queue2() {
+    max::priority_queue<int, std::vector<int>, Greater<int>> pq;
+    pq.push(3);
+    pq.push(9);
+    pq.push(6);
+    pq.push(2);
+    pq.push(1);
+    pq.push(8);
+
+    while (!pq.empty()) {
+        std::cout << pq.top() << std::endl;
+        pq.pop();
+    }
+}
+
+
+
 int main()
 {
-    test_stack1();
-    test_queue();
+    //test_stack1();
+    //test_queue();
+
+    test_priority_queue2();
     return 0;
 }
