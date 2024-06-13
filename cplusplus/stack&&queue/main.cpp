@@ -5,6 +5,9 @@
 #include <list>
 #include <queue>
 
+#include "list.h"
+#include "vector.h"
+
 
 void test_stack1() {
     max::stack<int, std::vector<int>> st;
@@ -74,12 +77,68 @@ void test_priority_queue2() {
 }
 
 
+void func(const max::list<int>& lt) {
+    auto it = lt.rbegin();
+    while (it != lt.rend()) {
+        std::cout << *it << " ";
+        ++it;
+    }
+}
+
+void test_list1() {
+    max::list<int> ls;
+
+    ls.push_back(1);
+    ls.push_back(2);
+    ls.push_back(3);
+    ls.push_back(4);
+    ls.push_back(5);
+
+    max::list<int>::reverse_iterator it = ls.rbegin();
+    while (it != ls.rend()) {
+        std::cout << *it << " ";
+        ++it;
+    }
+
+    func(ls);
+
+}
+
+void func2(const max::vector<int>& v) {
+    auto it = v.rbegin();
+    while (it != v.rend()) {
+        std::cout << *it << " ";
+        ++it;
+    }
+}
+
+void test_vector1() {
+    max::vector<int> v;
+    v.push_back(1);
+    v.push_back(2);
+    v.push_back(3);
+    v.push_back(4);
+    v.push_back(5);
+
+    max::vector<int>::reverse_iterator it = v.rbegin();
+    while (it != v.rend()) {
+        std::cout << *it << " ";
+        ++it;
+    }
+
+    func2(v);
+}
+
+
 
 int main()
 {
     //test_stack1();
     //test_queue();
 
-    test_priority_queue2();
+    //test_priority_queue2();
+    test_list1();
+
+    //test_vector1();
     return 0;
 }
