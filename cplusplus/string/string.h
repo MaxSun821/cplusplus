@@ -11,19 +11,18 @@
 namespace max {
     class string {
     public:
-        typedef char* iterator;
+        typedef char *iterator;
 
         iterator begin() {
             return _str;
         }
+
         iterator end() {
             return _str + _size;
         }
 
-        string(const char* str = "")
-        :_size(strlen(str))
-        ,_capacity(_size)
-        {
+        string(const char *str = "")
+                : _size(strlen(str)), _capacity(_size) {
             _str = new char[_capacity + 1];
             strcpy(_str, str);
         }
@@ -45,38 +44,39 @@ namespace max {
 //            }
 //            return *this;
 //        }
-        void swap(string& s) {
+        void swap(string &s) {
             std::swap(_str, s._str);
             std::swap(_size, s._size);
             std::swap(_capacity, s._capacity);
         }
-        string(const string& s)
-        :_str(nullptr)
-        ,_size(0)
-        ,_capacity(_size)
-        {
+
+        string(const string &s)
+                : _str(nullptr), _size(0), _capacity(_size) {
             string tmp(s._str);
             swap(tmp);
         }
-        string& operator=(string s) {
+
+        string &operator=(string s) {
             swap(s);
             return *this;
         }
+
         ~string() {
             delete[] _str;
             _str = nullptr;
             _size = _capacity = 0;
         }
-        const char* c_str() const {
+
+        const char *c_str() const {
             return _str;
         }
 
-        char& operator[](size_t pos) {
+        char &operator[](size_t pos) {
             assert(pos < _size);
             return _str[pos];
         }
 
-        const char& operator[](size_t pos) const {
+        const char &operator[](size_t pos) const {
             assert(pos < _size);
             return _str[pos];
         }
@@ -84,12 +84,13 @@ namespace max {
         size_t size() const {
             return _size;
         }
+
         size_t capacity() const {
             return _capacity;
         }
 
         void reserve(size_t n = 0) {
-            char* tmp = new char[n + 1];
+            char *tmp = new char[n + 1];
             strcpy(tmp, _str);
             delete[] _str;
             _str = tmp;
@@ -105,7 +106,7 @@ namespace max {
             _str[_size] = '\0';
         }
 
-        string& append(const char* str) {
+        string &append(const char *str) {
             size_t len = strlen(str);
             if (_size + len > _capacity) {
                 reserve(_size + len);
@@ -115,17 +116,17 @@ namespace max {
             return *this;
         }
 
-        string& operator+=(const char* str) {
+        string &operator+=(const char *str) {
             (*this).append(str);
             return *this;
         }
 
-        string& operator+=(char ch) {
+        string &operator+=(char ch) {
             (*this).push_back(ch);
             return *this;
         }
 
-        string& insert(size_t pos, char ch) {
+        string &insert(size_t pos, char ch) {
             assert(pos <= _size);
             if (_size == _capacity) {
                 reserve(_capacity == 0 ? 2 : 2 * _capacity);
@@ -140,7 +141,8 @@ namespace max {
             _str[_size] = '\0';
             return *this;
         }
-        string& insert(size_t pos, const char* str) {
+
+        string &insert(size_t pos, const char *str) {
             assert(pos <= _size);
             size_t len = strlen(str);
             if (_size + len > _capacity) {
@@ -155,13 +157,13 @@ namespace max {
             _size += len;
             return *this;
         }
-        string& erase(size_t pos, size_t len = npos) {
+
+        string &erase(size_t pos, size_t len = npos) {
             assert(pos < _size);
             if (len == npos || pos + len > _size) {
                 _str[pos] = '\0';
                 _size = pos;
-            }
-            else {
+            } else {
                 size_t end = pos + len;
                 while (end <= _size) {
                     _str[end - len] = _str[end];
@@ -171,38 +173,42 @@ namespace max {
             }
             return *this;
         }
+
         void resize(size_t n, char ch = '\0') {
-            if(n < _size) {
+            if (n < _size) {
                 _str[n] = '\0';
                 _size = n;
             } else {
                 reserve(n);
-                while(_size < n) {
+                while (_size < n) {
                     _str[_size] = ch;
                     _size++;
                 }
                 _str[_size] = '\0';
             }
         }
+
         size_t find(char ch, size_t pos = 0) {
             for (size_t i = pos; i < _size; ++i) {
-                if(_str[i] == ch) {
+                if (_str[i] == ch) {
                     return i;
                 }
             }
             return npos;
         }
-        size_t find(const char* s, size_t pos = 0) {
-            const char* sub = strstr(_str + pos, s);
-            if(sub) {
+
+        size_t find(const char *s, size_t pos = 0) {
+            const char *sub = strstr(_str + pos, s);
+            if (sub) {
                 return sub - _str;
             }
             return npos;
         }
+
         string substr(size_t pos = 0, size_t len = npos) {
             string tmp;
             size_t end = pos + len;
-            if(len == npos || len >= _size) {
+            if (len == npos || len >= _size) {
                 len = _size - pos;
                 end = _size;
             }
@@ -212,22 +218,28 @@ namespace max {
             }
             return tmp;
         }
-        bool operator==(const string& s) {
+
+        bool operator==(const string &s) {
             return strcmp(_str, s._str) == 0;
         }
-        bool operator<(const string& s) {
+
+        bool operator<(const string &s) {
             return strcmp(_str, s._str) < 0;
         }
-        bool operator<=(const string& s) {
+
+        bool operator<=(const string &s) {
             return (*this) == s || (*this) < s;
         }
-        bool operator>(const string& s) {
+
+        bool operator>(const string &s) {
             return !((*this) <= s);
         }
-        bool operator>=(const string& s) {
+
+        bool operator>=(const string &s) {
             return !((*this) < s);
         }
-        bool operator!=(const string& s) {
+
+        bool operator!=(const string &s) {
             return !((*this) == s);
         }
 
@@ -238,19 +250,21 @@ namespace max {
 
 
     private:
-        char* _str;
+        char *_str;
         size_t _size;
         size_t _capacity;
 
         const static size_t npos;
     };
+
     const size_t string::npos = -1;
 
-    std::ostream& operator<<(std::ostream& out, string& s) {
+    std::ostream &operator<<(std::ostream &out, string &s) {
         out << s.c_str();
         return out;
     }
-    std::istream& operator>>(std::istream& in, string& s) {
+
+    std::istream &operator>>(std::istream &in, string &s) {
         s.clear();
         char buff[129];
         size_t i = 0;
@@ -259,13 +273,13 @@ namespace max {
         ch = in.get();
         while (ch != ' ' && ch != '\n') {
             buff[i++] = ch;
-            if(i == 128) {
+            if (i == 128) {
                 s += buff;
                 i = 0;
             }
             ch = in.get();
         }
-        if(i != 0) {
+        if (i != 0) {
             buff[i] = '\0';
             s += buff;
         }
@@ -274,7 +288,9 @@ namespace max {
 
     void test_string1() {
         string s1("hello world");
-        std::cout << s1.c_str() << std::endl;
+        string s2(s1);
+        std::cout << s1 << std::endl;
+        std::cout << s2 << std::endl;
     }
 
     void test_string2() {
@@ -293,12 +309,13 @@ namespace max {
         }
         std::cout << std::endl;
 
-        for (auto ch : s1) {
+        for (auto ch: s1) {
             std::cout << ch << " ";
         }
         std::cout << std::endl;
 
     }
+
     void test_string3() {
         string s;
         s.push_back('a');
@@ -362,11 +379,13 @@ namespace max {
         std::cout << std::endl;
 
     }
+
     void test_string6() {
         string s1("helloy");
         string s2("helloxxxxxxxxxxxx");
         std::cout << (s1 > s2) << std::endl;
     }
+
     void test_string7() {
         string s1("hello ");
         s1.insert(0, "world ");
@@ -389,6 +408,7 @@ namespace max {
         std::cout << s << std::endl;
 
     }
+
     void test_string10() {
         std::string s1 = "https://cplusplus.com/reference/string/string/?kw=string";
         size_t i1 = s1.find(':');
