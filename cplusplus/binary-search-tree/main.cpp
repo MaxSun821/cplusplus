@@ -2,17 +2,22 @@
 #include "BinarySearchTree.h"
 
 int main() {
-    int a[] = {8, 3, 1, 10, 6, 4, 7, 14, 13};
-    BSTree<int> tree;
-    for(auto i : a) {
-        tree.insertR(i);
+    key_value::BSTree<std::string, std::string> tree;
+    tree.insert("abandon", "遗忘");
+    tree.insert("cat", "猫");
+    tree.insert("dog", "狗");
+    tree.insert("panda", "熊猫");
+
+    std::string str;
+    while (std::cin >> str) {
+        auto ret = tree.find(str);
+        if (ret) {
+            std::cout << ret->_value << std::endl;
+        }
+        else {
+            std::cout << "没有查到这个单词" << std::endl;
+        }
     }
-
-    tree.inorder();
-
-    tree.eraseR(8);
-    tree.inorder();
-
 
     return 0;
 }
