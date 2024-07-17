@@ -445,6 +445,10 @@ namespace key_value {
             }
             return nullptr;
         }
+        void inorder() {
+            _inorder(_root);
+            std::cout << std::endl;
+        }
     private:
         void destroy(node*& root) {
             if (root == nullptr) {
@@ -454,6 +458,14 @@ namespace key_value {
             destroy(root->_right);
             delete root;
             root = nullptr;
+        }
+        void _inorder(node* root) {
+            if (root == nullptr) {
+                return;
+            }
+            _inorder(root->_left);
+            std::cout << root->_key << ": " << root->_value << std::endl;
+            _inorder(root->_right);
         }
     private:
         node* _root;
