@@ -3,12 +3,22 @@
 #include "AVLTree.h"
 
 int main() {
-    AVLTree<int, int> tree;
-    tree.insert(std::pair<int, int>(1, 1));
-    tree.insert(std::pair<int, int>(2, 2));
-    tree.insert(std::pair<int, int>(3, 3));
-    tree.insert(std::pair<int, int>(4, 4));
+    const int N = 30;
+    std::vector<int> v;
+    v.reserve(N);
+    srand(time(0));
 
+    for (int i = 0; i < N; i++) {
+        v.push_back(rand());
+    }
+
+    AVLTree<int, int> tree;
+    for (auto e: v) {
+        tree.insert(std::make_pair(e, e));
+        std::cout << "insert:" << e << "->" << tree.isBalance() << std::endl;
+    }
+
+    tree.inorder();
 
 
     return 0;

@@ -3,6 +3,7 @@
 #define CPLUSPLUS_AVLTREE_H
 
 #include <iostream>
+#include <vector>
 
 template<class K, class V>
 struct AVLTreeNode {
@@ -72,6 +73,10 @@ public:
                 } else if (prev->_bf == -2 && cur->_bf == -1) {
                     // 右旋
                     rotateR(prev);
+                } else if (prev->_bf == 2 && cur->_bf == -1) {
+                    rotateRL(prev);
+                } else if (prev->_bf == -2 && cur->_bf == 1) {
+                    rotateLR(prev);
                 }
                 break;
             } else {
@@ -82,6 +87,21 @@ public:
 
     }
 
+    void inorder() {
+        _inorder(_root);
+        std::cout << std::endl;
+    }
+
+    bool isBalance() {
+        // 验证是否平衡
+        return _isBalance(_root);
+    }
+
+    int getHeight() {
+        return _height(_root);
+    }
+
+private:
     void rotateL(node *parent) {
         node *subR = parent->_right;
         node *subRL = subR->_left;
@@ -127,7 +147,7 @@ public:
             _root = subL;
             subL->_parent = nullptr;
         } else {
-            if (pp_node->_left = parent) {
+            if (pp_node->_left == parent) {
                 pp_node->_left = subL;
             } else {
                 pp_node->_right = subL;
@@ -136,6 +156,91 @@ public:
         }
 
         parent->_bf = subL->_bf = 0;
+    }
+
+    void rotateRL(node *parent) {
+
+        node *sub = parent->_right;
+        node *subL = sub->_left;
+
+        int bf = subL->_bf;
+
+        rotateR(parent->_right);
+        rotateL(parent);
+
+        if (bf == 0) {
+            // subL就是新插入元素
+            parent->_bf = sub->_bf = subL->_bf = 0;
+        } else if (bf == -1) {
+            // 在subL左子树插入新元素
+            parent->_bf = subL->_bf = 0;
+            sub->_bf = 1;
+        } else if (bf == 1) {
+            // 在subL右子树插入新元素
+            sub->_bf = subL->_bf = 0;
+            parent->_bf = -1;
+        } else {
+            assert(false);
+        }
+    }
+
+    void rotateLR(node *parent) {
+        node *sub = parent->_left;
+        node *subR = sub->_right;
+
+        int bf = subR->_bf;
+
+        rotateL(parent->_left);
+        rotateR(parent);
+
+        if (bf == 0) {
+            // subL就是新插入元素
+            parent->_bf = sub->_bf = subR->_bf = 0;
+        } else if (bf == -1) {
+            // 在subL左子树插入新元素
+            subR->_bf = sub->_bf = 0;
+            parent->_bf = 1;
+        } else if (bf == 1) {
+            // 在subL右子树插入新元素
+            parent->_bf = subR->_bf = 0;
+            sub->_bf = -1;
+        } else {
+            assert(false);
+        }
+    }
+
+    void _inorder(node *root) {
+        if (root == nullptr) {
+            return;
+        }
+        _inorder(root->_left);
+        std::cout << root->_data.first << ":" << root->_data.second << " ";
+        _inorder(root->_right);
+    }
+
+    bool _isBalance(node *root) {
+        if (root == nullptr) {
+            return true;
+        }
+        int leftHeight = _height(root->_left);
+        int rightHeight = _height(root->_right);
+
+        if(rightHeight - leftHeight != root->_bf) {
+            std::cout << root->_data.first << "平衡因子出现异常" << std::endl;
+        }
+
+        return abs(rightHeight - leftHeight) < 2
+               && _isBalance(root->_left)
+               && _isBalance(root->_right);
+    }
+
+    int _height(node *root) {
+        if (root == nullptr) {
+            return 0;
+        }
+        int leftHeight = _height(root->_left);
+        int rightHeight = _height(root->_right);
+        return leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
     }
 
 private:
