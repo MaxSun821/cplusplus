@@ -101,6 +101,27 @@ public:
         return _height(_root);
     }
 
+    node* find(const K& key) {
+        node* cur = _root;
+        if (key < cur->_data.first) {
+            cur = cur->_left;
+        }
+        else if (key > cur->_data.first) {
+            cur = cur->_right;
+        }
+        else {
+            return cur;
+        }
+        return nullptr;
+    }
+
+    size_t size() {
+        if (_root == nullptr) {
+            return 0;
+        }
+        return _size(_root->_left) + _size(_root->_right) + 1;
+    }
+
 private:
     void rotateL(node *parent) {
         node *subR = parent->_right;
@@ -242,6 +263,17 @@ private:
         int rightHeight = _height(root->_right);
         return leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
     }
+
+    size_t _size(node* root) {
+        if (root == nullptr) {
+            return 0;
+        }
+        size_t left = _size(root->_left);
+        size_t right = _size(root->_right);
+
+        return left + right + 1;
+    }
+
 
 private:
     node *_root;
