@@ -1,51 +1,35 @@
 #pragma once
 
-#include <iostream>
+#include "RBTree.h"
 
 namespace max {
 	template<class K>
-	struct TreeNode {
-		TreeNode* _left;
-		TreeNode* _right;
-		K _key;
-
-		TreeNode(const K& key = K())
-			: _key(key), _left(nullptr), _right(nullptr) {}
-	};
-
-	template<class K>
 	class set {
-		typedef TreeNode<K> node;
 	public:
-		set()
-			: _root(nullptr) {}
-		bool insert(const K& key) {
-			node* newNode = new node(key);
+		
+		struct KeyOfType {
+			const K& operator()(const K& data) {
+				return data;
+			}
+		};
 
-			node* cur = _root;
-			node* prev = nullptr;
-			while (cur) {
-				if (key < cur->_key) {
-					prev = cur;
-					cur = cur->_left;
-				}
-				else if (key > cur->_key) {
-					prev = cur;
-					cur = cur->_right;
-				}
-				else {
-					return false;
-				}
-			}
-			if (key < prev->_key) {
-				prev->_left = newNode;
-			}
-			else {
-				prev->_right = newNode;
-			}
-			return true;
+		typedef typename RBTree<K, K, KeyOfType>::const_iterator iterator;
+		typedef typename RBTree<K, K, KeyOfType>::const_iterator const_iterator;
+
+		iterator begin() const {
+			return _t.begin();
 		}
+
+		iterator end() const {
+			return _t.end();
+		}
+
+
+		std::pair<iterator, bool> insert(const K& key) {
+			return _t.insert(key);
+		}
+
 	private:
-		node* _root;
+		RBTree<K, K, KeyOfType> _t;
 	};
 }
