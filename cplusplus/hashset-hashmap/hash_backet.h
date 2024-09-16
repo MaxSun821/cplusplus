@@ -51,7 +51,7 @@ namespace hash_backet
 		typedef node<T> node;
 		typedef __ht_iterator<K, T, Ref, Ptr, KeyOfT, Hash> self;
 		node* _node;
-		HashTable<K, T, KeyOfT, Hash>* _ht;
+		const HashTable<K, T, KeyOfT, Hash>* _ht;
 		size_t _hashi;
 
 		__ht_iterator(node* node, HashTable<K, T, KeyOfT, Hash>* ht, size_t hashi)

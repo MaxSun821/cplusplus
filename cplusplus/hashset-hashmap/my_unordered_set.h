@@ -19,11 +19,12 @@ namespace max
 		typedef typename hash_backet::HashTable<K, K, SetOfKey, Hash>::const_iterator iterator;
 		typedef typename hash_backet::HashTable<K, K, SetOfKey, Hash>::const_iterator const_iterator;
 
-		iterator begin()
+		const_iterator begin() const
 		{
 			return _table.begin();
 		}
-		iterator end()
+
+		const_iterator end() const
 		{
 			return _table.end();
 		}
