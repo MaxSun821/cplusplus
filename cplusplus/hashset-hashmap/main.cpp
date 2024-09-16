@@ -5,6 +5,7 @@
 int main()
 {
 	max::test_set();
+	max::test_map();
 
 
 	return 0;

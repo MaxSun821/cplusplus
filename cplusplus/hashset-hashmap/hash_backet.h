@@ -113,7 +113,7 @@ namespace hash_backet
 	{
 		typedef node<T> node;
 
-		template<class K, class T, class Ref, class Ptr, class KeyOfT, class Hash>
+		template<class k, class v, class Ref, class Ptr, class kt, class hs>
 		friend struct __ht_iterator;
 
 	 public:
