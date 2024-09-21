@@ -22,7 +22,7 @@
 //	return 0;
 //}
 
-//#include "hash_table.h"
+#include "hash_table.h"
 #include "hash_backet.h"
 #include <unordered_set>
 #include <set>
@@ -52,7 +52,7 @@ int main()
 
 //	max::test1();
 	hash_backet::test2();
-//	hash_backet::test1();
+	hash_backet::test1();
 
 //	const size_t N = 100000;
 //
@@ -93,7 +93,6 @@ int main()
 //	}
 //	size_t end3 = clock();
 //	std::cout << "HashTable insert:" << end3 - begin3 << std::endl;
-
 
 
 

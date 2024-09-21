@@ -159,4 +159,19 @@ namespace max
 		}
 		hashTable.print();
 	}
+
+	void test2()
+	{
+		int arr[] = {5, 6, 3, 10, 7, 2, 1, 4};
+
+		HashTable<int, int> hashTable;
+
+		for(int i : arr)
+		{
+			hashTable.insert(std::make_pair(i, i));
+		}
+
+		hashTable.print();
+
+	}
 }
