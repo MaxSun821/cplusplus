@@ -1,0 +1,18 @@
+        -:    0:Source:/Users/sunyuhan/Library/study/cplusplus/c/basic/main.c
+        -:    0:Graph:/Users/sunyuhan/Library/study/cplusplus/c/cmake-build-debug-coverage/CMakeFiles/main.dir/basic/main.c.gcno
+        -:    0:Data:/Users/sunyuhan/Library/study/cplusplus/c/cmake-build-debug-coverage/CMakeFiles/main.dir/basic/main.c.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:
+        -:    3:#include <stdio.h>
+        -:    4:
+        -:    5:extern int g_val;
+        -:    6:
+function main called 1 returned 100% blocks executed 100%
+        1:    7:int main(void)
+        -:    8:{
+        1:    9:    printf("%i\n", g_val);
+        1:    9-block  0
+call    0 returned 1
+        1:   10:    return 0;
+        -:   11:}
