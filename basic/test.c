@@ -249,26 +249,116 @@
 //	return 0;
 //}
 
+//#include <stdio.h>
+//#include <string.h>
+//#include <windows.h>
+//int main()
+//{
+//	char str1[] = "welcom to c world!!!";
+//	char str2[] = "********************";
+//	int left = 0;
+//	int right = strlen(str1) - 1;
+//	while (left <= right)
+//	{
+//		str2[left] = str1[left];
+//		str2[right] = str1[right];
+//		printf("%s\n", str2);
+//		Sleep(1000);
+//		system("cls");
+//		left++;
+//		right--;
+//	}
+//
+//	printf("%s\n", str2);
+//	return 0;
+//}
+
+//#include <stdio.h>
+//
+//int main()
+//{
+//	int num1 = 0;
+//	int num2 = 0;
+//	scanf("%d %d", &num1, &num2);
+//
+//	while (num1 % num2 != 0)
+//	{
+//		int tmp = num1 % num2;
+//		num1 = num2;
+//		num2 = tmp;
+//	}
+//	printf("ret: %d\n", num2);
+//	return 0;
+//}
+
+//#include <stdio.h>
+//
+//int main()
+//{
+//	int i = 0;
+//	int count = 0;
+//	for (i = 1; i <= 100; i++)
+//	{
+//		if (i % 10 == 9)
+//		{
+//			count++;
+//		}
+//		if (i / 10 == 9)
+//		{
+//			count++;
+//		}
+//	}
+//	printf("count: %d\n", count);
+//	return 0;
+//}
+
+//#include <stdio.h>
+//
+//int main()
+//{
+//	int i = 0;
+//	for (i = 1; i <= 9; i++)
+//	{
+//		int j = 0;
+//		for (j = 1; j <= i; j++)
+//		{
+//			printf("%d*%d=%-2d ", i, j, i * j);
+//		}
+//		printf("\n");
+//	}
+//	return 0;
+//}
+
 #include <stdio.h>
-#include <string.h>
-#include <windows.h>
+
 int main()
 {
-	char str1[] = "welcom to c world!!!";
-	char str2[] = "********************";
+	int arr[] = { 1,2,3,4,5,6,7,8,9,10 };
+	int input = 0;
+	printf("Which do you want to find:> ");
+	scanf("%d", &input);
 	int left = 0;
-	int right = strlen(str1) - 1;
+	int right = sizeof(arr) / sizeof(arr[0]) - 1;
 	while (left <= right)
 	{
-		str2[left] = str1[left];
-		str2[right] = str1[right];
-		printf("%s\n", str2);
-		Sleep(1000);
-		system("cls");
-		left++;
-		right--;
+		int mid = (left + right) / 2;
+		if (input > arr[mid])
+		{
+			left = mid + 1;
+		}
+		else if (input < arr[mid])
+		{
+			right = mid - 1;
+		}
+		else
+		{
+			printf("Find it! It is %d\n", mid);
+			break;
+		}
 	}
-
-	printf("%s\n", str2);
+	if (left > right)
+	{
+		printf("Can't find it!\n");
+	}
 	return 0;
 }
