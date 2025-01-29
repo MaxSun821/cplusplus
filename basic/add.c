@@ -1,2 +1,2 @@
 
-static int g_val = 10;
+int g_val = 10;

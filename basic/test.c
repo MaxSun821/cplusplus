@@ -812,17 +812,250 @@
 //	printf("\n");
 //}
 
+//#include <stdio.h>
+//
+//int main()
+//{
+//	int arr[10] = {0};
+//	printf("%d\n", sizeof(arr));
+//
+//	
+//	printf("&arr[0]: %p\n", &arr[0]);
+//	printf("&arr[0]+1: %p\n", &arr[0] + 1);
+//	printf("&arr: %p\n", &arr);
+//	printf("&arr+1: %p\n", &arr + 1);
+//	return 0;
+//}
+
+//#include <stdio.h>
+//#include <string.h>
+//
+//void fun(char* str, int len)
+//{
+//	printf("%c\n", *str);
+//	printf("%c\n", *(str + len - 1));
+//
+//	*str = *(str + len - 1);
+//	printf("%s\n", str);
+//}
+//
+//int main()
+//{
+//	char* str = "abcdefg";
+//	str[0] = 'c';
+//	printf("%s\n", str);
+//	return 0;
+//}
+
+//#include <stdio.h>
+//
+//int main()
+//{
+//	int num = 0;
+//	scanf("%d", &num);
+//	int i = 0;
+//	printf("奇数位: ");
+//	for (i = 0; i < 32; i+=2)
+//	{
+//		printf("%d ", (num >> i) & 1);
+//	}
+//	printf("\n");
+//
+//	printf("偶数位: ");
+//	for (i = 1; i < 32; i += 2)
+//	{
+//		printf("%d ", (num >> i) & 1);
+//	}
+//	printf("\n");
+//	return 0;
+//}
+
+//#include <stdio.h>
+//
+//int main()
+//{
+//	int a = 0;
+//	int b = 0;
+//	scanf("%d %d", &a, &b);
+//	printf("交换前: a = %d, b = %d\n", a, b);
+//	a = a ^ b;
+//	b = a ^ b;
+//	a = a ^ b;
+//	printf("交换后: a = %d, b = %d\n", a, b);
+//	return 0;
+//}
+
+//#include <stdio.h>
+//
+//int main()
+//{
+//	int arr[] = {1,2,3,4,5,6,7,8,9,10};
+//	int i = 0;
+//	for (i = 0; i < 10; i++)
+//	{
+//		printf("%d ", *(arr + i));
+//	}
+//	printf("\n");
+//	return 0;
+//}
+//
+//#include <stdio.h>
+//
+//int main()
+//{
+//	char str[10001] = { 0 };
+//	int i = 0;
+//	for (i = 0; i < 10000; i++)
+//	{
+//		char ch = getchar();
+//		if (ch == '\n')
+//		{
+//			str[i] = '\0';
+//			break;
+//		}
+//		str[i] = ch;
+//	}
+//	printf("%s\n", str);
+//	return 0;
+//}
+
+//#include <stdio.h>
+//#include <math.h>
+//
+//int main()
+//{
+//	int n = 0;
+//	scanf("%d", &n);
+//	int i = 0;
+//	int sum = 0;
+//	int tmp = 0;
+//	for (i = 0; i < 5; i++)
+//	{
+//		tmp = n * pow(10, i) + tmp;
+//		sum += tmp;
+//	}
+//	printf("%d\n", sum);
+//	return 0;
+//}
+
+//#include <stdio.h>
+//#include <stdbool.h>
+//#include <math.h>
+//
+//int get_count(int n);
+//bool narcissistic_number(int n, int count);
+//
+//int main()
+//{
+//	int i = 0;
+//	for (i = 1; i <= 100000; i++)
+//	{
+//		int count = get_count(i);
+//		if (narcissistic_number(i, count))
+//		{
+//			printf("%d ", i);
+//		}
+//	}
+//	return 0;
+//}
+//
+//int get_count(int n)
+//{
+//	int count = 0;
+//	while (n)
+//	{
+//		count++;
+//		n /= 10;
+//	}
+//	return count;
+//}
+//
+//bool narcissistic_number(int n, int count)
+//{
+//	int sum = 0;
+//	int tmp = n;
+//	while (n)
+//	{
+//		sum += pow(n % 10, count);
+//		n /= 10;
+//	}
+//	return sum == tmp;
+//}
+
+//#include <stdio.h>
+//
+//int main()
+//{
+//	int line = 0;
+//	scanf("%d", &line);
+//	int i = 0;
+//	// 上半部分
+//	for (i = 0; i < line / 2 + 1; i++)
+//	{
+//		// 打印空格
+//		int j = 0;
+//		for (j = 0; j < line / 2 - i; j++)
+//		{
+//			printf(" ");
+//		}
+//		// 打印*
+//		for (j = 0; j < 2 * i + 1; j++)
+//		{
+//			printf("*");
+//		}
+//		printf("\n");
+//	}
+//	// 下半部分
+//	for (i = 0; i < line / 2; i++)
+//	{
+//		// 打印空格
+//		int j = 0;
+//		for (j = 0; j <= i; j++)
+//		{
+//			printf(" ");
+//		}
+//		// 打印*
+//		for (j = 0; j < line - 2 * i - 2; j++)
+//		{
+//			printf("*");
+//		}
+//		printf("\n");
+//	}
+//	return 0;
+//}
+
+//#include <stdio.h>
+//
+//int main()
+//{
+//	int money = 0;
+//	printf("请输入你有多少钱：");
+//	scanf("%d", &money);
+//
+//
+//	int total = money;
+//	int empty = money;
+//	while (empty > 1)
+//	{
+//		total += empty / 2;
+//		empty = empty / 2 + empty % 2;
+//	}
+//
+//	printf("你一共可以喝到：%d瓶水。\n", total);
+//
+//	return 0;
+//}
+
 #include <stdio.h>
+
+extern int g_val;
 
 int main()
 {
-	int arr[10] = {0};
-	printf("%d\n", sizeof(arr));
-
 	
-	printf("&arr[0]: %p\n", &arr[0]);
-	printf("&arr[0]+1: %p\n", &arr[0] + 1);
-	printf("&arr: %p\n", &arr);
-	printf("&arr+1: %p\n", &arr + 1);
+	printf("%d\n", g_val);
 	return 0;
 }
+
+
+
