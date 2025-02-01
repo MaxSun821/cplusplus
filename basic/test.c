@@ -1246,16 +1246,250 @@
 //	return 0;
 //}
 
+//#include <stdio.h>
+//
+//void test(char* ptr, int arr[])
+//{
+//
+//}
+//
+//int main()
+//{
+//	void (*pf)(char*, int*) = test;
+//
+//	return 0;
+//}
+
+//#include <stdio.h>
+//#include <stdbool.h>
+//
+//bool find_num(int arr[5][5], int row, int col, int num);
+//int main()
+//{
+//	int arr[5][5] = { {1,2,3,4,5},
+//		{6,7,8,9,10},
+//		{11,12,13,14,15},
+//		{16,17,18,19,20},
+//		{21,22,23,24,25} };
+//	int num = 0;
+//	scanf("%d", &num);
+//	int row = sizeof(arr) / sizeof(arr[0]);
+//	int col = sizeof(arr[0]) / sizeof(arr[0][0]);
+//	bool ret = find_num(arr, row, col, num);
+//
+//	if (ret)
+//	{
+//		printf("Find it!\n");
+//	}
+//	else
+//	{
+//		printf("Can't find it!\n");
+//	}
+//
+//	return 0;
+//}
+//
+//bool find_num(int arr[5][5], int row, int col, int num)
+//{
+//	int i = 0;
+//	int j = col - 1;
+//	while (i < row && j >= 0)
+//	{
+//		if (arr[i][j] == num)
+//		{
+//			return true;
+//		}
+//		else if (arr[i][j] > num)
+//		{
+//			j--;
+//		}
+//		else
+//		{
+//			i++;
+//		}
+//	}
+//	return false;
+//}
+
+
+//#include <stdio.h>
+//#include <string.h>
+//
+//char* turn_left(char* str, int length, int step);
+//void swap(char* str, int index1, int index2);
+//int main()
+//{
+//	char str[] = "ABCD";
+//	int length = strlen(str);
+//	int step = 0;
+//	scanf("%d", &step);
+//
+//	printf("%s\n", turn_left(str, length, step));
+//	return 0;
+//}
+//
+//char* turn_left(char* str, int length, int step)
+//{
+//	step %= length;
+//
+//	int begin = 0;
+//	int end = length - 1;
+//	int left_end = step - 1;
+//	int right_begin = step;
+//
+//	while (begin < left_end)
+//	{
+//		swap(str, begin, left_end);
+//		++begin;
+//		--left_end;
+//	}
+//
+//	while (right_begin < end)
+//	{
+//		swap(str, right_begin, end);
+//		++right_begin;
+//		--end;
+//	}
+//
+//	begin = 0;
+//	end = length - 1;
+//
+//	while (begin < end)
+//	{
+//		swap(str, begin, end);
+//		++begin;
+//		--end;
+//	}
+//	return str;
+//}
+//
+//void swap(char* str, int index1, int index2)
+//{
+//	char tmp = str[index1];
+//	str[index1] = str[index2];
+//	str[index2] = tmp;
+//}
+
+//#include <stdio.h>
+//#include <string.h>
+//
+//void bubble_sort(void* base, size_t num, size_t size, int (*compare_int)(const void*, const void*));
+//void swap(char* base1, char* base2, size_t size);
+//int compare_int(const void* p1, const void* p2);
+//int struct_compare_by_name(const void* p1, const void* p2);
+//
+//struct student
+//{
+//	char name[20];
+//	int age;
+//};
+//
+//int main()
+//{
+//	int arr[] = { 1,7,9,4,6,5,3,2,10,8 };
+//	int num = sizeof(arr) / sizeof(arr[0]);
+//	bubble_sort(arr, num, sizeof(arr[0]), compare_int);
+//	struct student s[] = { {"zhangsan", 20},{"lisi", 23},{"wangwu", 34} };
+//	int num2 = sizeof(s) / sizeof(s[0]);
+//	bubble_sort(s, num2, sizeof(s[0]), struct_compare_by_name);
+//	return 0;
+//}
+//
+//int compare_int(const void* p1, const void* p2)
+//{
+//	// 比较函数，升序
+//	return *((int*)p2) - *((int*)p1); // 将void*强制类型转换成int*
+//}
+//
+//int struct_compare_by_name(const void* p1, const void* p2)
+//{
+//	return strcmp(((struct student*)p1)->name, ((struct student*)p2)->name);
+//}
+//
+//void bubble_sort(void* base, size_t num, size_t size, int (*compare_int)(const void*, const void*))
+//{
+//
+//	size_t i = 0;
+//	for (i = 0; i < num - 1; i++)
+//	{
+//		size_t j = 0;
+//		for (j = 0; j < num - 1 - i; j++)
+//		{
+//			if (compare_int((((char*)base) + j * size), ((char*)base) + (j + 1) * size) > 0)
+//			{
+//				swap((((char*)base) + j * size), ((char*)base) + (j + 1) * size, size);
+//			}
+//		}
+//	}
+//}
+//
+//void swap(char* base1, char* base2, size_t size)
+//{
+//	size_t i = 0;
+//	for (i = 0; i < size; i++)
+//	{
+//		char tmp = base1[i];
+//		base1[i] = base2[i];
+//		base2[i] = tmp;
+//	}
+//}
+
+//#include <stdio.h>
+//#include <stdlib.h>
+//
+//int compare_int(const void* p1, const void* p2);
+//int compare_by_age(const void* p1, const void* p2);
+//
+//struct student
+//{
+//	char name[20];
+//	int age;
+//};
+//
+//int main()
+//{
+//	int int_array[] = { 7,3,4,1,0,8,9,6,5,2 };
+//	int size1 = sizeof(int_array) / sizeof(int_array[0]);
+//	qsort(int_array, size1, sizeof(int_array[0]), compare_int);
+//	struct student s[] = { {"zhangsan", 29},{"lisi", 17},{"wangwu", 34} };
+//	int size2 = sizeof(s) / sizeof(s[0]);
+//	qsort(s, size2, sizeof(s[0]), compare_by_age);
+//	return 0;
+//}
+//
+//int compare_int(const void* p1, const void* p2)
+//{
+//	return (*(int*)p1 - *(int*)p2);
+//}
+//
+//int compare_by_age(const void* p1, const void* p2)
+//{
+//	return ((struct student*)p1)->age - ((struct student*)p2)->age;
+//}
+
 #include <stdio.h>
+#include <string.h>
 
-void test(char* ptr, int arr[])
-{
-
-}
-
+int check_turn(char* str1, char* str2);
 int main()
 {
-	void (*pf)(char*, int*) = test;
-
+	char str1[] = "AABCD";
+	char str2[] = "ABCDA";
+	if (check_turn(str1, str2))
+	{
+		printf("是旋转得到的\n");
+	}
+	else
+	{
+		printf("不是旋转得到的\n");
+	}
 	return 0;
+}
+
+int check_turn(char* str1, char* str2)
+{
+	char tmp[50] = { 0 };
+	strcat(tmp, str1);
+	strcat(tmp, str2);
+	return strstr(tmp, str2) != NULL;
 }
