@@ -1467,29 +1467,265 @@
 //	return ((struct student*)p1)->age - ((struct student*)p2)->age;
 //}
 
-#include <stdio.h>
-#include <string.h>
+//#include <stdio.h>
+//#include <string.h>
+//
+//int check_turn(char* str1, char* str2);
+//int main()
+//{
+//	char str1[] = "AABCD";
+//	char str2[] = "ABCDA";
+//	if (check_turn(str1, str2))
+//	{
+//		printf("是旋转得到的\n");
+//	}
+//	else
+//	{
+//		printf("不是旋转得到的\n");
+//	}
+//	return 0;
+//}
+//
+//int check_turn(char* str1, char* str2)
+//{
+//	char tmp[50] = { 0 };
+//	strcat(tmp, str1);
+//	strcat(tmp, str2);
+//	return strstr(tmp, str2) != NULL;
+//}
 
-int check_turn(char* str1, char* str2);
+//#include <stdio.h>
+//
+//int main()
+//{
+//	char* str = "Hello World";
+//	char str2[] = "Hello World";
+//
+//	printf("str: %p\n", str);   // 00557BD4
+//	printf("str2: %p\n", str2); // 012FF6CC
+//
+//	
+//	return 0;
+//}
+
+//#include <stdio.h>
+//#include <string.h>
+//
+//char* my_strstr(char* str1, char* str2);
+//int main()
+//{
+//	char str1[] = "This is a simple string";
+//	char str2[] = "simple";
+//	char* ret = my_strstr(str1, str2);
+//	if (ret != NULL)
+//	{
+//		printf("%s\n", ret);
+//	}
+//	else
+//	{
+//		printf("Not a child string.\n");
+//	}
+//	return 0;
+//}
+//
+//char* my_strstr(char* str1, char* str2)
+//{
+//	char* str1_begin = str1;
+//
+//	while (*str1_begin != '\0')
+//	{
+//		char* str1_move = str1_begin;
+//		char* str2_move = str2;
+//		while ((*str1_move) != '\0' && (*str2_move) != '\0' && *str1_move == *str2_move)
+//		{
+//			str1_move++;
+//			str2_move++;
+//		}
+//		if (*str2_move == '\0')
+//		{
+//			return str1_begin;
+//		}
+//		
+//		str1_begin++;
+//	}
+//	return NULL;
+//}
+
+
+//#include <stdio.h>
+//#include <assert.h>
+//
+//char* my_strcat(char* dest, const char* src);
+//int main()
+//{
+//	char src[] = "world";
+//	char dest[20] = "hello ";
+//	printf("%s\n", my_strcat(dest, src));
+//	return 0;
+//}
+//
+//char* my_strcat(char* dest, const char* src)
+//{
+//	assert(dest && src);
+//	// find dest '\0'
+//	char* ret = dest;
+//	while (*dest != '\0')
+//	{
+//		dest++;
+//	}
+//	while (*dest++ = *src++)
+//	{
+//		;
+//	}
+//	return ret;
+//}
+
+//#include <stdio.h>
+//#include <assert.h>
+//
+//int my_strcmp(const char* str1, const char* str2);
+//int main()
+//{
+//	char str1[] = "abcd";
+//	char str2[] = "abcp";
+//	printf("%d\n", my_strcmp(str1, str2));
+//	return 0;
+//}
+//
+//int my_strcmp(const char* str1, const char* str2)
+//{
+//	assert(str1 && str2);
+//
+//	while (*str1 == *str2)
+//	{
+//		if (*str1 == '\0')
+//		{
+//			return 0;
+//		}
+//		str1++;
+//		str2++;
+//	}
+//
+//	return *str1 - *str2;
+//}
+
+//#include <stdio.h>
+//#include <assert.h>
+//
+//char* my_strcpy(char* dest, const char* src);
+//int main()
+//{
+//	char src[] = "hello";
+//	char dest[] = "xxxxxxxxxxxxxxxxxxxxxx";
+//	printf("%s\n", my_strcpy(dest, src));
+//	return 0;
+//}
+//
+//char* my_strcpy(char* dest, const char* src)
+//{
+//	assert(dest && src);
+//
+//	char* ret = dest;
+//	while (*dest++ = *src++)
+//	{
+//		;
+//	}
+//	return ret;
+//}
+
+//#include <stdio.h>
+//
+//size_t my_strlen(const char* str);
+//int main()
+//{
+//	size_t length = my_strlen("hello world");
+//	printf("%u\n", length);
+//	return 0;
+//}
+//
+//size_t my_strlen(const char* str)
+//{
+//	int count = 0;
+//	while (*str != '\0')
+//	{
+//		count++;
+//		str++;
+//	}
+//	return count;
+//}
+
+//#include <stdio.h>
+//#include <assert.h>
+//
+//void* my_memmove(void* dest, const void* src, size_t num);
+//int main()
+//{
+//	int arr1[] = { 1,2,3,4,5,6,7,8,9,10 };
+//	my_memmove(arr1 + 2, arr1, 20);
+//	int i = 0;
+//	for (i = 0; i < 10; i++)
+//	{
+//		printf("%d ", arr1[i]);
+//	}
+//	printf("\n");
+//	return 0;
+//}
+//
+//void* my_memmove(void* dest, const void* src, size_t num)
+//{
+//	assert(dest && src);
+//
+//	char* ret = dest;
+//	if (dest < src)
+//	{
+//		// front to later
+//		while (num--)
+//		{
+//			*((char*)dest) = *((char*)src);
+//			dest = (char*)dest + 1;
+//			src = (char*)src + 1;
+//		}
+//	}
+//	else
+//	{
+//		// later to front
+//		while (num--)
+//		{
+//			*((char*)dest + num) = *((char*)src + num);
+//		}
+//	}
+//	return ret;
+//}
+
+#include <stdio.h>
+#include <assert.h>
+
+void* my_memcpy(void* dest, const void* src, size_t num);
 int main()
 {
-	char str1[] = "AABCD";
-	char str2[] = "ABCDA";
-	if (check_turn(str1, str2))
+	int arr1[] = { 1,2,3,4,5,6,7 };
+	int arr2[20] = { 0 };
+	my_memcpy(arr2, arr1, 20);
+
+	int i = 0;
+	for (i = 0; i < 5; i++)
 	{
-		printf("是旋转得到的\n");
+		printf("%d ", arr2[i]);
 	}
-	else
-	{
-		printf("不是旋转得到的\n");
-	}
+	printf("\n");
 	return 0;
 }
 
-int check_turn(char* str1, char* str2)
+void* my_memcpy(void* dest, const void* src, size_t num)
 {
-	char tmp[50] = { 0 };
-	strcat(tmp, str1);
-	strcat(tmp, str2);
-	return strstr(tmp, str2) != NULL;
+	assert(dest && src);
+
+	void* ret = dest;
+	while (num--)
+	{
+		*((char*)dest) = *((char*)src);
+		dest = (char*)dest + 1;
+		src = (char*)src + 1;
+	}
+	return ret;
 }
