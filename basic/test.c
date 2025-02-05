@@ -1696,36 +1696,288 @@
 //	}
 //	return ret;
 //}
+//
+//#include <stdio.h>
+//#include <assert.h>
+//#include <string.h>
+//
+//void* my_memcpy(void* dest, const void* src, size_t num);
+//int main()
+//{
+//	int arr1[] = { 0,1,2,3,4,5,6 };
+//	int arr2[20] = { 0 };
+//	memmove(arr1 + 1, arr1, 8);
+//
+//	int i = 0;
+//	for (i = 0; i < 6; i++)
+//	{
+//		printf("%d ", arr1[i]);
+//	}
+//	printf("\n");
+//	return 0;
+//}
+//
+//void* my_memcpy(void* dest, const void* src, size_t num)
+//{
+//	assert(dest && src);
+//
+//	void* ret = dest;
+//	while (num--)
+//	{
+//		*((char*)dest) = *((char*)src);
+//		dest = (char*)dest + 1;
+//		src = (char*)src + 1;
+//	}
+//	return ret;
+//}
+
+
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <assert.h>
+//
+//int my_atoi(const char* str);
+//int main()
+//{
+//	char buff[128];
+//	fgets(buff, 10, stdin);
+//	int i = my_atoi(buff);
+//	printf("%d\n", i);
+//	return 0;
+//}
+//
+//int my_atoi(const char* str)
+//{
+//	assert(str);
+//
+//	int n = 0;
+//	while (*str == ' ')
+//	{
+//		++str;
+//	}
+//	int flag = 1;
+//	if ((*str < '0' || *str > '9') && *str != '+' && *str != '-')
+//	{
+//		return 0;
+//	}
+//	if (*str == '-')
+//	{
+//		flag = -1;
+//		++str;
+//	}
+//	else if (*str == '+')
+//	{
+//		++str;
+//	}
+//	while (*str >= '0' && *str <= '9')
+//	{
+//		n = n * 10 + (*str - '0');
+//		++str;
+//	}
+//	return flag * n;
+//}
+
+//#include <stdio.h>
+//#include <string.h>
+//#include <assert.h>
+//
+//char* my_strncat(char* dest, const char* src, size_t count);
+//int main()
+//{
+//	char src[] = " world";
+//	char dest[20] = "hello";
+//
+//	my_strncat(dest, src, 3);
+//
+//	printf("%s\n", dest);
+//
+//	return 0;
+//}
+//
+//char* my_strncat(char* dest, const char* src, size_t count)
+//{
+//	assert(dest && src);
+//
+//	char* ret = dest;
+//	while (*dest != '\0')
+//	{
+//		dest++;
+//	}
+//	while (count--)
+//	{
+//		if (*src == '\0')
+//		{
+//			*dest = *src;
+//			return ret;
+//		}
+//		*dest++ = *src++;
+//	}
+//	*dest = '\0';
+//	return ret;
+//}
+
+//#include <stdio.h>
+//#include <string.h>
+//#include <assert.h>
+//
+//char* my_strncpy(char* dest, const char* src, size_t count);
+//int main()
+//{
+//	char src[] = "hello world";
+//	char dest[20] = "xxx";
+//
+//	my_strncpy(dest, src, 7);
+//	printf("%s\n", dest);
+//	return 0;
+//}
+//
+//char* my_strncpy(char* dest, const char* src, size_t count)
+//{
+//	assert(dest && src);
+//	
+//	char* ret = dest;
+//	while (count--)
+//	{
+//		if (*src == '\0')
+//		{
+//			*dest = *src;
+//			return ret;
+//		}
+//		*dest++ = *src++;
+//	}
+//	*dest = '\0';
+//	return ret;
+//}
+
+//#include <stdio.h>
+//
+//int main()
+//{
+//	int arr[] = { 1,2,3,4,7,1,2,3,4,9 };
+//	int size = sizeof(arr) / sizeof(arr[0]);
+//	int tmp = 0;
+//
+//	int i = 0;
+//	for (i = 0; i < size; i++)
+//	{
+//		tmp ^= arr[i];
+//	}
+//
+//	// 找到二进制位最低位1
+//	int pos = 0;
+//	for (i = 0; i < 32; i++)
+//	{
+//		if (((tmp >> i) & 1) == 1)
+//		{
+//			pos = i;
+//			break;
+//		}
+//	}
+//	int dog1 = 0;
+//	int dog2 = 0;
+//
+//	for (i = 0; i < size; i++)
+//	{
+//		if (((arr[i] >> pos) & 1) == 1)
+//		{
+//			dog1 ^= arr[i];
+//		}
+//		else
+//		{
+//			dog2 ^= arr[i];
+//		}
+//	}
+//
+//	printf("dog1: %d, dog2: %d\n", dog1, dog2);
+//
+//	return 0;
+//}
+
+//#include <stdio.h>
+//#include <stdlib.h>
+//
+//union Un
+//{
+//	int i;
+//	char c;
+//};
+//int main()
+//{
+//	union Un u;
+//	u.i = 1;
+//	if (u.c == 1)
+//	{
+//		printf("小端存储\n");
+//	}
+//	else
+//	{
+//		printf("大端存储\n");
+//	}
+//	return 0;
+//}
+
+//#include <stdio.h>
+//
+//#define SWAP(n) (n=(((n&0x55555555)<<1)+((n&0xaaaaaaaa)>>1)))
+//
+//int main()
+//{
+//	int num = 0;
+//	scanf("%d", &num);
+//
+//	// 打印交换前的每一个二进制位
+//	int i = 0;
+//	printf("交换前：");
+//	for (i = 31; i >= 0; i--)
+//	{
+//		printf("%d ", (num >> i) & 1);
+//	}
+//	printf("\n");
+//
+//	SWAP(num);
+//	printf("交换后：");
+//	for (i = 31; i >= 0; i--)
+//	{
+//		printf("%d ", (num >> i) & 1);
+//	}
+//	printf("\n");
+//
+//	return 0;
+//}
+
+
+//#include <stdio.h>
+//
+//#define OFFSETOF(type, mem) (size_t)&(((type*)0)->mem)
+//struct s
+//{
+//	int i;
+//	char c;
+//	double d;
+//};
+//int main()
+//{
+//	printf("%d\n", OFFSETOF(struct s, i));
+//	printf("%d\n", OFFSETOF(struct s, c));
+//	printf("%d\n", OFFSETOF(struct s, d));
+//
+//	return 0;
+//}
 
 #include <stdio.h>
-#include <assert.h>
 
-void* my_memcpy(void* dest, const void* src, size_t num);
-int main()
+#define SQUARE(x) ((x)*(x))
+
+int square(int x)
 {
-	int arr1[] = { 1,2,3,4,5,6,7 };
-	int arr2[20] = { 0 };
-	my_memcpy(arr2, arr1, 20);
-
-	int i = 0;
-	for (i = 0; i < 5; i++)
-	{
-		printf("%d ", arr2[i]);
-	}
-	printf("\n");
-	return 0;
+    return x * x;
 }
 
-void* my_memcpy(void* dest, const void* src, size_t num)
+int main()
 {
-	assert(dest && src);
-
-	void* ret = dest;
-	while (num--)
-	{
-		*((char*)dest) = *((char*)src);
-		dest = (char*)dest + 1;
-		src = (char*)src + 1;
-	}
-	return ret;
+    int a = 2;
+    int b = DOUBLE(a);
+    int c = double_num(a);
+    printf("%d\n", b);
+    return 0;
 }
