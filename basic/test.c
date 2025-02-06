@@ -1966,18 +1966,19 @@
 
 #include <stdio.h>
 
-#define SQUARE(x) ((x)*(x))
-
-int square(int x)
+struct Student
 {
-    return x * x;
-}
+    char name[10];
+    int age;
+};
 
 int main()
 {
-    int a = 2;
-    int b = DOUBLE(a);
-    int c = double_num(a);
-    printf("%d\n", b);
+    char str[20] = { 0 };
+    sprintf(str, "%s %d", "ÕÅÈı", 20);
+    struct Student s = { 0 };
+    sscanf(str, "%s %d", s.name, &(s.age));
+
+    printf("%s %d", s.name, s.age);
     return 0;
 }
