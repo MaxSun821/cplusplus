@@ -2,6 +2,7 @@
 
 void Init(ArrayList* pal)
 {
+	assert(pal);
 	pal->a = (DataType*)malloc(4 * sizeof(DataType));
 	if (pal->a == NULL)
 	{
@@ -80,6 +81,7 @@ void PopFront(ArrayList* pal)
 
 void Insert(ArrayList* pal, int pos, DataType x)
 {
+	assert(pal);
 	assert(pos >= 0 && pos <= pal->size);
 	CheckCapacity(pal);
 	int i = 0;
@@ -93,6 +95,7 @@ void Insert(ArrayList* pal, int pos, DataType x)
 
 void Erase(ArrayList* pal, int pos)
 {
+	assert(pal);
 	assert(pos >= 0 && pos < pal->size);
 
 	int i = 0;
@@ -103,8 +106,29 @@ void Erase(ArrayList* pal, int pos)
 	pal->size--;
 }
 
+int Find(ArrayList* pal, DataType x)
+{
+	assert(pal);
+	int i = 0;
+	for (i = 0; i < pal->size; i++)
+	{
+		if (pal->a[i] == x)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+void Modify(ArrayList* pal, int pos, DataType x)
+{
+	assert(pal);
+	assert(pos >= 0 && pos < pal->size);
+	pal->a[pos] = x;
+}
+
 void Print(ArrayList* pal)
 {
+	assert(pal);
 	int i = 0;
 	for (i = 0; i < pal->size; i++)
 	{

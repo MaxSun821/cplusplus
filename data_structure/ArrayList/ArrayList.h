@@ -26,6 +26,9 @@ void PopFront(ArrayList* pal);
 void Insert(ArrayList* pal, int pos, DataType x);
 void Erase(ArrayList* pal, int pos);
 
+int Find(ArrayList* pal, DataType x);
+void Modify(ArrayList* pal, int pos, DataType x);
+
 void Print(ArrayList* pal);
 
 #endif
