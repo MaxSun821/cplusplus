@@ -170,10 +170,12 @@ Node* Find(Node* pHead, DataType x)
 
 void Destroy(Node** ppHead)
 {
-	while (*ppHead != NULL)
+	Node* cur = *ppHead;
+	while (cur != NULL)
 	{
-		Node* del = *ppHead;
-		*ppHead = (*ppHead)->next;
-		free(del);
+		Node* curNext = cur->next;
+		free(cur);
+		cur = curNext;
 	}
+	*ppHead = NULL;
 }
