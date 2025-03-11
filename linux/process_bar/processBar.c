@@ -1,19 +1,20 @@
 #include "processBar.h"
+#include <stdio.h>
 
-void processBar() {
-  char bar[102];
+char bar[102];
+
+void processBar(int rate) {
+  if (rate < 0 || rate > 100) {
+    return;
+  }
   static const char *roll = "|/-\\";
-  memset(bar, '\0', sizeof(bar)); // 初始化
-  int count = 0;
   int len = strlen(roll);
 
-  while (count <= LOAD) {
-    printf("[%-100s][%d%%][%c]\r", bar, count, roll[count % len]);
-    bar[count++] = BODY;
-    if (count < LOAD)
-      bar[count] = TOP;
-    fflush(stdout);
-    usleep(50000);
-  }
-  printf("\n");
+  printf("[%-100s][%d%%][%c]\r", bar, rate, roll[rate % len]);
+  fflush(stdout);
+  bar[rate++] = BODY;
+  if (rate < LOAD)
+    bar[rate] = TOP;
 }
+
+void initBar() { memset(bar, '\0', sizeof(bar)); }
