@@ -13,8 +13,10 @@ class string {
 public:
     string(const char* str = "");
     string(const string& str);
+    string& operator=(string str);
     ~string();
 
+    void swap(string& str);
     const char* c_str() const;
 
     void reserve(size_t capacity);
@@ -47,6 +49,9 @@ public:
     bool operator>=(const string& str) const;
 
     size_t find(char c, size_t pos = 0) const;
+    size_t find(const char* str, size_t pos = 0) const;
+
+    string substr(size_t pos = 0, size_t count = npos);
 
     void clear();
 
@@ -54,6 +59,7 @@ private:
     char* str_;
     size_t size_;
     size_t capacity_;
+public:
     const static size_t npos = -1;
 };
     std::ostream& operator<<(std::ostream& os, const string& str);
@@ -63,6 +69,7 @@ private:
     void test_string3();
     void test_string4();
     void test_string5();
+    void test_string6();
 } // max
 
 #endif //STRING_H

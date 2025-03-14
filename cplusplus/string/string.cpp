@@ -6,10 +6,32 @@ namespace max {
         str_ = new char[capacity_ + 1];
         strcpy(str_, str);
     }
+    // string::string(const string& str)
+    //     : size_(str.size_), capacity_(str.capacity_) {
+    //     str_ = new char[capacity_ + 1];
+    //     strcpy(str_, str.c_str());
+    // }
     string::string(const string& str)
-        : size_(str.size_), capacity_(str.capacity_) {
-        str_ = new char[capacity_ + 1];
-        strcpy(str_, str.c_str());
+        : str_(nullptr), size_(0), capacity_(0)
+    {
+        string temp(str.str_);
+        swap(temp);
+    }
+    // string& string::operator=(const string& str) {
+    //     if (*this != str) {
+    //         char* temp = new char[str.capacity_ + 1];
+    //         strcpy(temp, str.c_str());
+    //         delete[] str_;
+    //         str_ = temp;
+    //         capacity_ = str.capacity_;
+    //         size_ = str.size_;
+    //     }
+    //     return *this;
+    // }
+
+    string& string::operator=(string str) {
+        swap(str);
+        return *this;
     }
     string::~string() {
         delete[] str_;
@@ -18,6 +40,12 @@ namespace max {
 
     const char* string::c_str() const {
         return str_;
+    }
+
+    void string::swap(string& str) {
+        std::swap(str_, str.str_);
+        std::swap(capacity_, str.capacity_);
+        std::swap(size_, str.size_);
     }
 
     void string::reserve(size_t capacity) {
@@ -41,12 +69,10 @@ namespace max {
         }
         else {
             reserve(count);
-            size_t begin = size_;
-            while (begin < count) {
-                str_[begin++] = c;
+            while (size_ < count) {
+                str_[size_++] = c;
             }
-            str_[begin] = '\0';
-            size_ = count;
+            str_[size_] = '\0';
         }
     }
 
@@ -134,16 +160,17 @@ namespace max {
     }
     void string::erase(size_t pos, size_t n) {
         assert(pos < size_);
-        if (n > size_) {
+        if (pos + n > size_ || n == string::npos) {
             str_[pos] = '\0';
+            size_ = pos;
             return;
         }
-        size_t end = pos + n;
-        while (end <= size_) {
-            str_[pos] = str_[end];
-            end++;
-            pos++;
+        size_t begin = pos + n;
+        while (begin <= size_) {
+            str_[begin - n] = str_[begin];
+            begin++;
         }
+        size_ -= n;
     }
 
     bool string::operator<(const string& str) const {
@@ -176,7 +203,29 @@ namespace max {
                 return i;
             }
         }
-        return -1;
+        return string::npos;
+    }
+    size_t string::find(const char* str, size_t pos) const {
+        const char* ret = strstr(str_ + pos, str);
+        if (ret) {
+            return ret - str_;
+        }
+        return npos;
+    }
+
+    string string::substr(size_t pos, size_t count) {
+        string s;
+        size_t end = pos + count;
+        if (count == string::npos || end > size_) {
+            count = size_ - pos;
+            end = size_;
+        }
+
+        s.reserve(count);
+        for (size_t i = pos; i < end; ++i) {
+            s += str_[i];
+        }
+        return s;
     }
 
     std::ostream& operator<<(std::ostream& os, const string& str) {
@@ -185,13 +234,25 @@ namespace max {
     }
     std::istream& operator>>(std::istream& is, string& str) {
         str.clear();
+        char buff[128];
         char ch;
         is.get(ch);
-        str += ch;
+        int i = 0;
         while (ch != ' ' && ch != '\n') {
+            buff[i++] = ch;
             is.get(ch);
-            str += ch;
+            if (i == 127) {
+                buff[i] = '\0';
+                str += buff;
+                i = 0;
+            }
         }
+
+        if (i != 0) {
+            buff[i] = '\0';
+            str += buff;
+        }
+
         return is;
     }
 
@@ -226,7 +287,20 @@ namespace max {
     }
 
     void test_string3() {
-        string s = "hello";
+        string s = "hello world";
+        s.insert(5, "abc");
+        std::cout << s << std::endl;
+
+        s.insert(0, 3, 'x');
+        std::cout << s << std::endl;
+
+        s.erase(3, 3);
+        std::cout << s << std::endl;
+        s.erase(5, 100);
+        std::cout << s << std::endl;
+        s.erase(2);
+        std::cout << s << std::endl;
+
     }
 
     void test_string4() {
@@ -240,5 +314,26 @@ namespace max {
         s.resize(11, 'c');
         std::cout << s << std::endl;
         std::cout << s.size() << std::endl;
+    }
+
+    void test_string6() {
+        string s = "https://en.cppreference.com/w/cpp/string/basic_string";
+        string sub1, sub2, sub3;
+
+        size_t ret1 = s.find(":");
+        if (ret1 == string::npos) {
+            std::cout << "There's no 1 string!" << std::endl;
+        }
+        sub1 = s.substr(0, ret1);
+        size_t ret2 = s.find("/", ret1 + 3);
+        if (ret2 == string::npos) {
+            std::cout << "There's no 2 string!" << std::endl;
+        }
+        sub2 = s.substr(ret1 + 3, ret2 - (ret1 + 3));
+        sub3 = s.substr(ret2 + 1);
+
+        std::cout << sub1 << std::endl;
+        std::cout << sub2 << std::endl;
+        std::cout << sub3 << std::endl;
     }
 }
