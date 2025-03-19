@@ -5,7 +5,7 @@
 
 
 namespace max {
-    template <class T>
+    template <typename T>
     struct list_node {
         T data_;
         list_node<T>* next_;
@@ -16,15 +16,15 @@ namespace max {
         {}
     };
 
-    template <class T>
+    template <typename T, typename Ref, typename Ptr>
     struct __list_iterator {
         typedef list_node<T> node;
-        typedef __list_iterator<T> self;
+        typedef __list_iterator<T, Ref, Ptr> self;
         node* node_;
         __list_iterator(node* node)
             : node_(node)
         {}
-        T& operator*() const {
+        Ref operator*() const {
             return node_->data_;
         }
         self& operator++() {
@@ -45,7 +45,7 @@ namespace max {
             node_ = node_->prev_;
             return tmp;
         }
-        T* operator->() const {
+        Ptr operator->() const {
             return &(node_->data_);
         }
         bool operator!=(const self& other) const {
@@ -66,7 +66,8 @@ namespace max {
             size_ = 0;
         }
     public:
-        typedef __list_iterator<T> iterator;
+        typedef __list_iterator<T, T&, T*> iterator;
+        typedef __list_iterator<T, const T&, const T*> const_iterator;
         list() {
             empty_init();
         }
@@ -85,6 +86,12 @@ namespace max {
         }
         iterator end() {
             return iterator(head_);
+        }
+        const_iterator begin() const {
+            return const_iterator(head_->next_);
+        }
+        const_iterator end() const {
+            return const_iterator(head_);
         }
         void push_back(const T& data) {
             insert(end(), data);
@@ -170,6 +177,16 @@ namespace max {
         }
         std::cout << std::endl;
     }
+
+    template <typename Container>
+    void print_list(const Container& c) {
+        typename Container::const_iterator it = c.begin();
+        while (it != c.end()) {
+            std::cout << *it << " ";
+            ++it;
+        }
+        std::cout << std::endl;
+    }
     void test_list2() {
         list<int> lt;
         lt.push_back(1);
@@ -196,6 +213,20 @@ namespace max {
             std::cout << i << " ";
         }
         std::cout << std::endl;
+    }
+    void test_list3() {
+        list<int> lt;
+        lt.push_back(1);
+        lt.push_back(2);
+        lt.push_back(3);
+        lt.push_back(4);
+        lt.push_back(5);
+        lt.push_front(10);
+        lt.push_front(20);
+        lt.push_front(30);
+
+        print_list(lt);
+
     }
 }
 
