@@ -6,12 +6,16 @@
 #include <algorithm>
 #include <string>
 
+#include "reverse_iterator.h"
+
 namespace max {
     template<typename T>
     class vector {
     public:
         typedef T *iterator;
         typedef const T *const_iterator;
+        typedef ReverseIterator<iterator, T&, T*> reverse_iterator;
+        typedef ReverseIterator<const_iterator, const T&, const T*> const_reverse_iterator;
 
         vector() {}
 
@@ -70,6 +74,19 @@ namespace max {
 
         const_iterator end() const {
             return finish_;
+        }
+
+        reverse_iterator rbegin() {
+            return reverse_iterator(end());
+        }
+        reverse_iterator rend() {
+            return reverse_iterator(begin());
+        }
+        const_reverse_iterator rbegin() const {
+            return const_reverse_iterator(end());
+        }
+        const_reverse_iterator rend() const {
+            return const_reverse_iterator(begin());
         }
 
         size_t size() const {
@@ -394,6 +411,20 @@ namespace max {
         }
         std::cout << std::endl;
 
+    }
+    void vector_test9() {
+        vector<std::string> v1;
+        v1.push_back("123");
+        v1.push_back("234");
+        v1.push_back("345");
+        v1.push_back("456");
+
+        vector<std::string>::reverse_iterator it = v1.rbegin();
+        while (it != v1.rend()) {
+            std::cout << *it << " ";
+            ++it;
+        }
+        std::cout << std::endl;
     }
 }
 
