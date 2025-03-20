@@ -2,6 +2,7 @@
 #define LIST_H
 
 #include <iostream>
+#include "reverse_iterator.h"
 
 
 namespace max {
@@ -68,6 +69,9 @@ namespace max {
     public:
         typedef __list_iterator<T, T&, T*> iterator;
         typedef __list_iterator<T, const T&, const T*> const_iterator;
+        typedef ReverseIterator<iterator, T&, T*> reverse_iterator;
+        typedef ReverseIterator<const_iterator, const T&, const T*> const_reverse_iterator;
+
         list() {
             empty_init();
         }
@@ -92,6 +96,18 @@ namespace max {
         }
         const_iterator end() const {
             return const_iterator(head_);
+        }
+        reverse_iterator rbegin() {
+            return reverse_iterator(end());
+        }
+        reverse_iterator rend() {
+            return reverse_iterator(begin());
+        }
+        const_reverse_iterator rbegin() const {
+            return const_reverse_iterator(end());
+        }
+        const_reverse_iterator rend() const {
+            return const_reverse_iterator(begin());
         }
         void push_back(const T& data) {
             insert(end(), data);
@@ -227,6 +243,24 @@ namespace max {
 
         print_list(lt);
 
+    }
+    void test_list4() {
+        list<int> lt;
+        lt.push_back(1);
+        lt.push_back(2);
+        lt.push_back(3);
+        lt.push_back(4);
+        lt.push_back(5);
+        lt.push_front(10);
+        lt.push_front(20);
+        lt.push_front(30);
+
+        list<int>::reverse_iterator it = lt.rbegin();
+        while (it != lt.rend()) {
+            std::cout << *it << " ";
+            ++it;
+        }
+        std::cout << std::endl;
     }
 }
 
