@@ -9,5 +9,8 @@ int main() {
     tree.print();
     std::cout << std::endl;
 
+    if (tree.findR(12)) {
+        std::cout << 3 << std::endl;
+    }
     return 0;
 }

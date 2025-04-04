@@ -137,10 +137,13 @@ public:
     }
     bool insertR(const T& data) {
         // 使用递归
-        _insertR(root_, data);
+        return _insertR(root_, data);
     }
     bool eraseR(const T& data) {
-
+        return _eraseR(root_, data);
+    }
+    bool findR(const T& data) {
+        return _findR(root_, data);
     }
     void print() {
         _print(root_);
@@ -168,6 +171,53 @@ private:
             return _insertR(root->right_, data);
         }
         return false;
+    }
+    bool _eraseR(TreeNode<T>*& root, const T& data) {
+        if (root == nullptr) {
+            return false;
+        }
+        if (data < root->data_) {
+            return _eraseR(root->left_, data);
+        }
+        if (data > root->data_) {
+            return _eraseR(root->right_, data);
+        }
+        if (root->left_ == nullptr) {
+            // 左子树为空
+            TreeNode<T>* del = root;
+            root = root->right_;
+            delete del;
+            return true;
+        }
+        else if (root->right_ == nullptr) {
+            // 右子树为空
+            TreeNode<T>* del = root;
+            root = root->left_;
+            delete del;
+            return true;
+        }
+        else {
+            // 左右子树都不为空
+            TreeNode<T>* tmp = root->right_;
+            while (tmp->left_ != nullptr) {
+                // 找到右子树最小值
+                tmp = tmp->left_;
+            }
+            std::swap(root->data_, tmp->data_);
+            return _eraseR(root->right_, data);
+        }
+    }
+    bool _findR(TreeNode<T>* root, const T& data) {
+        if (root == nullptr) {
+            return false;
+        }
+        if (data < root->data_) {
+            return _findR(root->left_, data);
+        }
+        if (data > root->data_) {
+            return _findR(root->right_, data);
+        }
+        return true;
     }
     TreeNode<T>* root_;
 };
