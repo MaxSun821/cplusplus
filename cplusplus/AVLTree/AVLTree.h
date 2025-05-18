@@ -190,6 +190,14 @@ public:
         return _isBalanced(root_);
     }
 
+    int height() {
+		return _height(root_);
+    }
+
+    bool find(const K& key) {
+        return _find(root_, key);
+    }
+
 private:
     void inorder_(TreeNode<K, V> *root) {
         if (root == nullptr) {
@@ -206,7 +214,7 @@ private:
         int leftHeight = _height(root->left_);
         int rightHeight = _height(root->right_);
         if (rightHeight - leftHeight != root->bf_) {
-            cout << root->value_.first << "平衡因子异常" << endl;
+            // cout << root->value_.first << "平衡因子异常" << endl;
             return false;
         }
         return abs(leftHeight - rightHeight) < 2
@@ -219,6 +227,18 @@ private:
         int leftHeight = _height(root->left_);
         int rightHeight = _height(root->right_);
         return leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
+    }
+    bool _find(TreeNode<K, V>* root, const K& key) {
+        while (root != nullptr) {
+            if (key < root->value_.first) {
+                root = root->left_;
+            } else if (key > root->value_.first) {
+                root = root->right_;
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     TreeNode<K, V> *root_ = nullptr;
