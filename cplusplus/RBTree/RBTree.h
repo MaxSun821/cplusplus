@@ -56,7 +56,7 @@ public:
         } else {
             parent->right_ = current;
         }
-
+        current->parent_ = parent;
         // 调整颜色
         while (parent != nullptr && parent->color_ == RED) {
             TreeNode<K, V> *grandparent = parent->parent_;
