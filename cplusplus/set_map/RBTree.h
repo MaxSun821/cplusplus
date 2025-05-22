@@ -27,9 +27,66 @@ struct TreeNode {
     }
 };
 
+template<typename T>
+struct __TreeIterator {
+	typedef TreeNode<T> Node;
+	typedef __TreeIterator<T> Self;
+    Node* node_;
+
+    __TreeIterator(Node* node)
+        : node_(node) {
+	}
+
+    T& operator*() {
+        return node_->value_;
+	}
+    T* operator->() {
+		return &(node_->value_);
+    }
+
+    Self& operator++() {
+        if (node_->right_ != nullptr) {
+            // 下一个就是右子树的最左节点
+			Node* cur = node_->right_;
+            while (cur->left_ != nullptr) {
+                cur = cur->left_;
+			}
+            node_ = cur;
+        }
+        else {
+            // 右树为空，找父节点左的那个祖先
+            Node* cur = node_;
+            Node* parent = cur->parent_;
+            while (parent != nullptr && cur == parent->right_) {
+                cur = parent;
+				parent = parent->parent_;
+            }
+            node_ = parent;
+        }
+        return *this;
+    }
+    bool operator!=(const Self& s) {
+		return node_ != s.node_;
+    }
+    bool operator==(const Self& s) {
+        return node_ == s.node_;
+    }
+};
+
 template<typename K, typename T, typename KeyOfValue>
 class RBTree {
 public:
+    typedef __TreeIterator<T> iterator;
+    iterator begin() {
+        TreeNode<T>* cur = root_;
+        while (cur != nullptr && cur->left_ != nullptr) {
+            cur = cur->left_;
+		}
+        return iterator(cur);
+    }
+    iterator end() {
+        return iterator(nullptr);
+	}
     bool insert(const T &p) {
 
         if (root_ == nullptr) {

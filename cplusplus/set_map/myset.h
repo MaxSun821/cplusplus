@@ -7,18 +7,28 @@
 namespace max {
 
     template<typename K>
-    class MySet {
+    class set {
+		
     public:
         struct SetOfValue {
-            const K& operator()(const K& x) {
-                return x;
+            const K& operator()(const K& key) {
+                return key;
             }
         };
-        bool insert(const K& value) {
-            return root_.insert(value);
+
+        typedef typename RBTree<K, K, SetOfValue>::iterator iterator;
+
+        iterator begin() {
+            return tree.begin();
+        }
+        iterator end() {
+            return tree.end();
+        }
+        bool insert(const K& key) {
+			return tree.insert(key);
         }
     private:
-        RBTree<K, K, SetOfValue>* root_;
+        RBTree<K, K, SetOfValue> tree;
     };
 }
 
