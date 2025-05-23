@@ -8,7 +8,6 @@ namespace max {
 
     template<typename K>
     class set {
-		
     public:
         struct SetOfValue {
             const K& operator()(const K& key) {
@@ -16,15 +15,16 @@ namespace max {
             }
         };
 
-        typedef typename RBTree<K, K, SetOfValue>::iterator iterator;
+        typedef typename RBTree<K, K, SetOfValue>::const_iterator iterator;
+        typedef typename RBTree<K, K, SetOfValue>::const_iterator const_iterator;
 
-        iterator begin() {
+        iterator begin() const {
             return tree.begin();
         }
-        iterator end() {
+        iterator end() const {
             return tree.end();
         }
-        bool insert(const K& key) {
+        pair<iterator, bool> insert(const K& key) {
 			return tree.insert(key);
         }
     private:

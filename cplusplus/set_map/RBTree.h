@@ -27,48 +27,50 @@ struct TreeNode {
     }
 };
 
-template<typename T>
+template<typename T, typename Ref, typename Ptr>
 struct __TreeIterator {
-	typedef TreeNode<T> Node;
-	typedef __TreeIterator<T> Self;
-    Node* node_;
+    typedef TreeNode<T> Node;
+    typedef __TreeIterator<T, Ref, Ptr> Self;
+    Node *node_;
 
-    __TreeIterator(Node* node)
+    __TreeIterator(Node *node)
         : node_(node) {
-	}
-
-    T& operator*() {
-        return node_->value_;
-	}
-    T* operator->() {
-		return &(node_->value_);
     }
 
-    Self& operator++() {
+    Ref operator*() {
+        return node_->value_;
+    }
+
+    Ptr operator->() {
+        return &node_->value_;
+    }
+
+    Self &operator++() {
         if (node_->right_ != nullptr) {
             // 下一个就是右子树的最左节点
-			Node* cur = node_->right_;
+            Node *cur = node_->right_;
             while (cur->left_ != nullptr) {
                 cur = cur->left_;
-			}
+            }
             node_ = cur;
-        }
-        else {
+        } else {
             // 右树为空，找父节点左的那个祖先
-            Node* cur = node_;
-            Node* parent = cur->parent_;
+            Node *cur = node_;
+            Node *parent = cur->parent_;
             while (parent != nullptr && cur == parent->right_) {
                 cur = parent;
-				parent = parent->parent_;
+                parent = parent->parent_;
             }
             node_ = parent;
         }
         return *this;
     }
-    bool operator!=(const Self& s) {
-		return node_ != s.node_;
+
+    bool operator!=(const Self &s) {
+        return node_ != s.node_;
     }
-    bool operator==(const Self& s) {
+
+    bool operator==(const Self &s) {
         return node_ == s.node_;
     }
 };
@@ -76,23 +78,38 @@ struct __TreeIterator {
 template<typename K, typename T, typename KeyOfValue>
 class RBTree {
 public:
-    typedef __TreeIterator<T> iterator;
+    typedef __TreeIterator<T, T &, T *> iterator;
+    typedef __TreeIterator<T, const T &, const T *> const_iterator;
+
     iterator begin() {
-        TreeNode<T>* cur = root_;
+        TreeNode<T> *cur = root_;
         while (cur != nullptr && cur->left_ != nullptr) {
             cur = cur->left_;
-		}
+        }
         return iterator(cur);
     }
+
     iterator end() {
         return iterator(nullptr);
-	}
-    bool insert(const T &p) {
+    }
 
+    const_iterator begin() const {
+        TreeNode<T> *cur = root_;
+        while (cur != nullptr && cur->left_ != nullptr) {
+            cur = cur->left_;
+        }
+        return const_iterator(cur);
+    }
+
+    const_iterator end() const {
+        return const_iterator(nullptr);
+    }
+
+    pair<TreeNode<T> *, bool> insert(const T &p) {
         if (root_ == nullptr) {
             root_ = new TreeNode<T>(p);
             root_->color_ = BLACK; // 根结点必须是黑色
-            return true;
+            return make_pair(root_, true);
         }
         TreeNode<T> *parent = nullptr;
         TreeNode<T> *current = root_;
@@ -105,11 +122,12 @@ public:
                 current = current->right_;
             } else {
                 // key有重复元素
-                return false;
+                return make_pair(current, false);
             }
         }
         current = new TreeNode<T>(p);
         current->color_ = RED;
+        TreeNode<T> *temp = current;
         if (kov(p) < kov(parent->value_)) {
             parent->left_ = current;
         } else {
@@ -174,7 +192,7 @@ public:
         }
 
         root_->color_ = BLACK; // 根结点必须是黑色
-        return true;
+        return make_pair(temp, true);
     }
 
     void rotateL(TreeNode<T> *parent) {
@@ -202,7 +220,6 @@ public:
             }
             subRight->parent_ = pParent;
         }
-
     }
 
     void rotateR(TreeNode<T> *parent) {
@@ -241,7 +258,6 @@ public:
         int blacknum = 0;
 
         return check(root_, blacknum);
-
     }
 
 private:
@@ -253,6 +269,7 @@ private:
         cout << root->value_.first << endl;
         inorder_(root->right_);
     }
+
     bool check(TreeNode<T> *root, int blacknum) {
         if (root == nullptr) {
             cout << "黑色结点数：" << blacknum << endl;
@@ -270,6 +287,7 @@ private:
 
         return check(root->left_, blacknum) && check(root->right_, blacknum);
     }
+
     TreeNode<T> *root_ = nullptr;
 };
 
