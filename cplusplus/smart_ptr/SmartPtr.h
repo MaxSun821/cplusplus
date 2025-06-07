@@ -2,6 +2,9 @@
 #define SMART_PTR_H
 
 #include <iostream>
+#include <functional>
+
+using std::function;
 
 namespace max {
 	template<typename T>
@@ -57,16 +60,22 @@ namespace max {
 
 	template<typename T>
 	class shared_ptr {
-	public:
-		shared_ptr(T* p = nullptr) : ptr_(p) {}
-		~shared_ptr() {
-			ref_count_--;
-			if (ref_count_ == 0) {
-				delete ptr_;
-				ptr_ = nullptr;
+	private:
+		void release() {
+			if (--(*ref_count_) == 0) {
+				deleter_(ptr_); // Use custom deleter if provided
 				delete ref_count_; // Clean up reference count
-				ref_count_ = nullptr;
 			}
+		}
+	public:
+		shared_ptr(T* p = nullptr) : ptr_(p), ref_count_(new int(1)) {}
+
+		template<typename D>
+		shared_ptr(T* p, D deleter)
+			: ptr_(p), ref_count_(new int(1)), deleter_(deleter) {  }
+
+		~shared_ptr() {
+			release();
 		}
 		shared_ptr(const shared_ptr<T>& p)
 			: ptr_(p.ptr_)
@@ -79,24 +88,47 @@ namespace max {
 		T* operator->() {
 			return ptr_;
 		}
-		shared_ptr& operator=(const shared_ptr<T>& p) {
+		shared_ptr<T>& operator=(const shared_ptr<T>& p) {
 			if (ptr_ != p.ptr_) {
-				(*ref_count_)--;
-				if (ref_count_ == 0) {
-					delete ptr_;
-					ptr_ = nullptr;
-					delete ref_count_; // Clean up reference count
-					ref_count_ = nullptr;
-				}
+				release(); // Release current resource
 				ptr_ = p.ptr_;
 				ref_count_ = p.ref_count_; // Share the reference count
 				++(*ref_count_); // Increment reference count
 			}
 			return *this;
 		}
+		T* get() const {
+			return ptr_;
+		}
+		int use_count() const {
+			return *ref_count_;
+		}
 	private:
 		T* ptr_;
-		int* ref_count_ = new int(1); // Reference count for shared_ptr
+		int* ref_count_; // Reference count for shared_ptr
+		function<void(T*)> deleter_ = [](T* ptr) {delete ptr; };
+	};
+
+	template<typename T>
+	class weak_ptr {
+	public:
+		weak_ptr()
+			: ptr_(nullptr) { }
+		weak_ptr(const shared_ptr<T>& p)
+			: ptr_(p.get()) {
+		}
+		T& operator*() {
+			return *ptr_;
+		}
+		T* operator->() {
+			return ptr_;
+		}
+		weak_ptr<T>& operator=(const shared_ptr<T>& p) {
+			ptr_ = p.get();
+			return *this;
+		}
+	private:
+		T* ptr_;
 	};
 }
 
