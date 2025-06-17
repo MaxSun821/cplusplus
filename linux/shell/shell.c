@@ -4,6 +4,8 @@
 #include <sys/wait.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
+#include <fcntl.h>
 
 #define LEFT "["
 #define RIGHT "]"
@@ -12,9 +14,15 @@
 #define ARGC_SIZE 32
 #define DELIM " \t"
 #define EXIT_CODE 60
+#define NONE -1
+#define IN_RDIR 0
+#define OUT_RDIR 1
+#define APPEND_RDIR 2
 
 int last_exit_code = 0;
 char my_env[ARGC_SIZE];
+char *rdir_filename = NULL;
+int rdir_no = NONE;
 
 const char *get_user()
 {
@@ -33,7 +41,61 @@ const char *get_pwd()
   return ret;
 }
 
-
+void check_rdir(char *command_line)
+{
+  char *cur = command_line;
+  while (*cur)
+  {
+    if (*cur == '>')
+    {
+      if (*(cur + 1) == '>')
+      {
+        // 追加重定向
+        *cur++ = '\0';
+        *cur++ = '\0';
+        while (isspace(*cur))
+        {
+          cur++;
+        }
+        rdir_filename = cur;
+        rdir_no = APPEND_RDIR;
+        break;
+      }
+      else 
+      {
+        // 输出重定向
+        *cur = '\0';
+        cur++;
+        while (isspace(*cur))
+        {
+          cur++;
+        }
+        rdir_filename = cur;
+        rdir_no = OUT_RDIR;
+        break;
+      }
+    }
+    else if (*cur == '<')
+    {
+      // 输入重定向
+      *cur = '\0';
+      cur++;
+      while (isspace(*cur))
+      {
+        // 移除空格
+        cur++;
+      }
+      rdir_filename = cur;
+      rdir_no = IN_RDIR;
+      break;
+    }
+    else 
+    {
+      // nothing to do
+    }
+    cur++;
+  }
+}
 
 void mutual(char *command_line, int size)
 {
@@ -41,6 +103,8 @@ void mutual(char *command_line, int size)
   char *s = fgets(command_line, size, stdin);
   (void)s;
   command_line[strlen(command_line) - 1] = '\0';
+
+  check_rdir(command_line);
 }
 
 int splite_string(char *command_line, char **argv)
@@ -62,7 +126,24 @@ void execute_command(char **argv)
     else if (id == 0)
     {
       // 子进程，执行普通命令
-      execvpe(argv[0], argv, environ);
+      // 解决重定向问题
+      int fd = 0;
+      if (rdir_no == IN_RDIR)
+      {
+        fd = open(rdir_filename, O_RDONLY);
+        dup2(fd, 0);
+      }
+      else if (rdir_no == OUT_RDIR)
+      {
+        fd = open(rdir_filename, O_CREAT|O_WRONLY|O_TRUNC, 0666);
+        dup2(fd, 1);
+      }
+      else if (rdir_no == APPEND_RDIR)
+      {
+        fd = open(rdir_filename, O_CREAT|O_WRONLY|O_APPEND, 0666);
+        dup2(fd, 1);
+      }
+      execvp(argv[0], argv);
       exit(EXIT_CODE);
     }
     else 
@@ -129,6 +210,9 @@ int main()
   int quit = 0;
   while (!quit)
   {
+    // 1. 设置重定向相关参数
+    rdir_filename = NULL;
+    rdir_no = NONE;
     // 2. 获取命令行
     mutual(command_line, sizeof(command_line));
     // printf("%s", command_line);
