@@ -20,8 +20,14 @@ public:
     // 构造函数，设置日志文件名
     Logger(const std::string &filename)
     {
-        log_file_.open(filename, std::ios::out | std::ios::app);
-        if (!log_file_)
+        // 初始化日志文件流，每个级别对应一个文件
+        info_file_.open("info.log", std::ios::out | std::ios::app);
+        warning_file_.open("warning.log", std::ios::out | std::ios::app);
+        error_file_.open("error.log", std::ios::out | std::ios::app);
+        fatal_file_.open("fatal.log", std::ios::out | std::ios::app);
+        debug_file_.open("debug.log", std::ios::out | std::ios::app);
+
+        if (!(info_file_ && warning_file_ && error_file_ && fatal_file_ && debug_file_))
         {
             std::cerr << "无法打开日志文件" << std::endl;
         }
@@ -30,10 +36,11 @@ public:
     // 析构函数，关闭文件
     ~Logger()
     {
-        if (log_file_.is_open())
-        {
-            log_file_.close();
-        }
+        if (info_file_.is_open()) info_file_.close();
+        if (warning_file_.is_open()) warning_file_.close();
+        if (error_file_.is_open()) error_file_.close();
+        if (fatal_file_.is_open()) fatal_file_.close();
+        if (debug_file_.is_open()) debug_file_.close();
     }
 
     // 设置日志级别
@@ -49,8 +56,9 @@ public:
         {
             std::string level_str = logLevelToString(level);
             std::string timestamp = getCurrentTime();
+            std::ofstream *target_file = getLogFile(level);
 
-            log_file_ << "[" << timestamp << "] [" << level_str << "] " << message << std::endl;
+            *target_file << "[" << timestamp << "] [" << level_str << "] " << message << std::endl;
             std::cout << "[" << timestamp << "] [" << level_str << "] " << message << std::endl;
         }
     }
@@ -79,6 +87,25 @@ private:
         }
     }
 
-    std::ofstream log_file_; // 日志文件流
+    std::ofstream *getLogFile(LogLevel level)
+    {
+        switch (level) 
+        {
+            case INFO:    return &info_file_;
+            case WARNING: return &warning_file_;
+            case ERROR:   return &error_file_;
+            case FATAL:   return &fatal_file_;
+            case DEBUG:   return &debug_file_;
+            default:      return nullptr;
+        }
+    }
+
+    // std::ofstream log_file_; // 日志文件流
+    std::ofstream info_file_;
+    std::ofstream warning_file_;
+    std::ofstream error_file_;
+    std::ofstream fatal_file_;
+    std::ofstream debug_file_;
+
     LogLevel log_level_ = INFO;
 };
